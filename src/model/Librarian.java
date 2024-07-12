@@ -45,7 +45,7 @@ public class Librarian {
     public void returnBook(String title, String memberId) {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
-        if (book != null && member != null && !book.isAvailable()) {
+        if (book != null && member != null) {
             book.setAvailable(true);
         }
     }
