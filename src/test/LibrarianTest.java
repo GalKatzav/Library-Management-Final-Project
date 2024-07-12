@@ -9,8 +9,12 @@ import model.SingletonLibrary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LibrarianTest {
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import model.*;
 
+public class LibrarianTest {
     private Librarian librarian;
     private Library library;
 
@@ -18,6 +22,8 @@ public class LibrarianTest {
     public void setUp() {
         library = SingletonLibrary.getInstance();
         librarian = new Librarian();
+        library.getBooks().clear();
+        library.getMembers().clear();
     }
 
     @Test
