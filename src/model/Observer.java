@@ -1,4 +1,5 @@
 package model;
 
-public class Observer {
+public interface Observer {
+    void update(Book book);
 }
