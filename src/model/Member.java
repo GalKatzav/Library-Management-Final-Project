@@ -17,27 +17,16 @@ public class Member {
     public String getName() {
         return name;
     }
+
     public String getId() {
         return id;
     }
+
     public List<Loan> getLoans() {
         return loans;
     }
-    public void borrowBook(Book book) {
-        if (book.isAvailable()) {
-            book.setAvailable(false);
-            Loan loan = new Loan(book);
-            loans.add(loan);
-        } else {
-            System.out.println("Book is not available");
-        }
-    }
-    public void returnBook(Book book) {
-        for (Loan loan : loans) {
-            if (loan.getBook().equals(book) && loan.getReturnDate() == null) {
-                loan.returnBook();
-                break;
-            }
-        }
+
+    public void addLoan(Loan loan) {
+        loans.add(loan);
     }
 }
