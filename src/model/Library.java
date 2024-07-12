@@ -3,33 +3,60 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Library {
+public class Library {
     private List<Book> books;
     private List<Member> members;
 
+    private static Library instance;
+
     protected Library() {
-        books = new ArrayList<>();
-        members = new ArrayList<>();
+        this.books = new ArrayList<>();
+        this.members = new ArrayList<>();
     }
+
+    public static Library getInstance() {
+        if (instance == null) {
+            instance = new Library();
+        }
+        return instance;
+    }
+
     public List<Book> getBooks() {
         return books;
     }
+
     public List<Member> getMembers() {
         return members;
     }
+
     public void addBook(Book book) {
         books.add(book);
     }
+
     public void removeBook(Book book) {
         books.remove(book);
     }
+
     public void addMember(Member member) {
         members.add(member);
     }
+
     public void removeMember(Member member) {
         members.remove(member);
     }
-    public int countAvailableBooks() {
+
+    public String getLibrarySummary() {
+        StringBuilder summary = new StringBuilder();
+        summary.append("Library Summary:\n");
+        summary.append("Total Books: ").append(books.size()).append("\n");
+        summary.append("Available Books: ").append(countAvailableBooks()).append("\n");
+        summary.append("Loaned Books: ").append(countLoanedBooks()).append("\n");
+        summary.append("Total Members: ").append(members.size()).append("\n");
+        summary.append("Total Loans: ").append(countTotalLoans()).append("\n");
+        return summary.toString();
+    }
+
+    private int countAvailableBooks() {
         int count = 0;
         for (Book book : books) {
             if (book.isAvailable()) {
@@ -38,26 +65,16 @@ public abstract class Library {
         }
         return count;
     }
-    public int countLoanedBooks() {
+
+    private int countLoanedBooks() {
         return books.size() - countAvailableBooks();
     }
-    public int countActiveMembers() {
-        return members.size();
-    }
-    public int countTotalLoans() {
+
+    private int countTotalLoans() {
         int count = 0;
-        for (Member member : members) {
-            count += member.getLoans().size();
+        for (Book book : books) {
+            count += book.getLoanHistory().size();
         }
         return count;
-    }
-
-    public void displayLibrarySummary() {
-        System.out.println("Library Summary:");
-        System.out.println("Total Books: " + books.size());
-        System.out.println("Available Books: " + countAvailableBooks());
-        System.out.println("Loaned Books: " + countLoanedBooks());
-        System.out.println("Total Members: " + members.size());
-        System.out.println("Total Loans: " + countTotalLoans());
     }
 }
