@@ -25,7 +25,7 @@ public class MemberTest {
 
     @Test
     public void testAddLoan() {
-        Loan loan = new Loan(new Book("The Catcher in the Rye", "J.D. Salinger", 1951), member);
+        Loan loan = new Loan(new Book("The Catcher in the Rye", "J.D. Salinger", 1951, 5), member);
         member.addLoan(loan);
         assertEquals(1, member.getLoans().size());
     }

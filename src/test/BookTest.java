@@ -15,7 +15,7 @@ public class BookTest {
 
     @BeforeEach
     public void setUp() {
-        book = new Book("The Catcher in the Rye", "J.D. Salinger", 1951);
+        book = new Book("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
     }
 
     @Test
