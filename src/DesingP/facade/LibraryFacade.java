@@ -1,6 +1,9 @@
-package model;
+package DesingP.facade;
 
-import decorator.RatedBook;
+import DesingP.decorator.RatedBook;
+import DesingP.observer.Observer;
+import model.*;
+import DesingP.singleton.SingletonLibrary;
 
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class LibraryFacade {
     public boolean lendBook(String title, String memberId) {
         return librarian.lendBook(title, memberId);
     }
+
     public void returnBook(String title, String memberId) {
         librarian.returnBook(title, memberId);
     }
@@ -80,7 +84,35 @@ public class LibraryFacade {
         return -1; // Book not found
     }
 
-    public List<Book> getUserLoans(String userId) {
+    public List<Loan> getUserLoans(String userId) {
         return librarian.getUserLoans(userId);
+    }
+
+    public void addObserverToBook(String title, Observer observer) {
+        Book book = findBookByTitle(title);
+        if (book != null) {
+            book.addObserver(observer);
+        }
+    }
+
+    public void removeObserverFromBook(String title, Observer observer) {
+        Book book = findBookByTitle(title);
+        if (book != null) {
+            book.removeObserver(observer);
+        }
+    }
+
+    public void addObserverToMember(String memberId, Observer observer) {
+        Member member = librarian.findMemberById(memberId);
+        if (member != null) {
+            member.addObserver(observer);
+        }
+    }
+
+    public void removeObserverFromMember(String memberId, Observer observer) {
+        Member member = librarian.findMemberById(memberId);
+        if (member != null) {
+            member.removeObserver(observer);
+        }
     }
 }

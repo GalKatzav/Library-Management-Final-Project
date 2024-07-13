@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import model.Book;
 import model.Librarian;
 import model.Library;
-import model.SingletonLibrary;
+import DesingP.singleton.SingletonLibrary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,9 @@
 package model;
 
-import decorator.RatedBook;
+import DesingP.decorator.RatedBook;
+import DesingP.observer.BookObserver;
+import DesingP.observer.Observer;
+import DesingP.singleton.SingletonLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,16 @@ public class Librarian {
 
     public void addBook(String title, String author, int year, int quantity) {
         Book book = new Book(title, author, year, quantity);
+        BookObserver observer = new BookObserver("Library Staff");
+        book.addObserver(observer);
         library.addBook(book);
+    }
+
+    public void removeObserverFromBook(String title, Observer observer) {
+        Book book = findBookByTitle(title);
+        if (book != null) {
+            book.removeObserver(observer);
+        }
     }
 
     public void removeBook(String title) {
@@ -67,7 +79,7 @@ public class Librarian {
 
 
 
-    protected Book findBookByTitle(String title) {
+    public Book findBookByTitle(String title) {
         for (Book book : library.getBooks()) {
             if (book.getTitle().contains(title) || book instanceof RatedBook && ((RatedBook) book).getTitle().equals(title)) {
                 return book;
@@ -76,7 +88,7 @@ public class Librarian {
         return null;
     }
 
-    private Member findMemberById(String id) {
+    public Member findMemberById(String id) {
         for (Member member : library.getMembers()) {
             if (member.getId().equals(id)) {
                 return member;
@@ -96,7 +108,7 @@ public class Librarian {
             }
         }
     }
-    public List<Book> getUserLoans(String userId) {
+    public List<Loan> getUserLoans(String userId) {
         Member member = findMemberById(userId);
         if (member != null) {
             return member.getLoans();

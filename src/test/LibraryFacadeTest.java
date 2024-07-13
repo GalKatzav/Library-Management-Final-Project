@@ -3,9 +3,9 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.Book;
-import model.LibraryFacade;
+import DesingP.facade.LibraryFacade;
 import model.Library;
-import model.SingletonLibrary;
+import DesingP.singleton.SingletonLibrary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

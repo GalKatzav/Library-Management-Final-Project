@@ -1,13 +1,14 @@
 package model;
 
+import DesingP.observer.Observable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book implements Cloneable{
+public class Book extends Observable implements Cloneable {
     private String title;
     private String author;
     private int year;
-    private boolean available;
     private int quantity;
     private List<Loan> loanHistory;
     private int borrowedQuantity;
@@ -16,7 +17,6 @@ public class Book implements Cloneable{
         this.title = title;
         this.author = author;
         this.year = year;
-        this.available = true;
         this.quantity = quantity;
         this.borrowedQuantity = 0;
         this.loanHistory = new ArrayList<>();
@@ -39,8 +39,8 @@ public class Book implements Cloneable{
         return quantity > 0;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public int getBorrowedQuantity() {
+        return borrowedQuantity;
     }
 
     public int getQuantity() {
@@ -54,11 +54,13 @@ public class Book implements Cloneable{
     public void lendCopy() {
         if (quantity > 0) {
             quantity--;
+            notifyObservers("Book " + title + " lent. Remaining copies: " + quantity);
         }
     }
 
     public void returnCopy() {
         quantity++;
+        notifyObservers("Book " + title + " returned. Remaining copies: " + quantity);
     }
 
     public void addLoan(Loan loan) {
@@ -81,5 +83,4 @@ public class Book implements Cloneable{
             throw new AssertionError(); // Can't happen
         }
     }
-
 }

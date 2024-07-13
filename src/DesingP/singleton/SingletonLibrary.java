@@ -1,6 +1,8 @@
-package model;
+package DesingP.singleton;
 
-public class SingletonLibrary extends Library{
+import model.Library;
+
+public class SingletonLibrary extends Library {
     private static SingletonLibrary instance;
 
     private SingletonLibrary() {

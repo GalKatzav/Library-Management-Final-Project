@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import model.LibraryFacade;
+
+import DesingP.observer.BookObserver;
+import DesingP.facade.LibraryFacade;
+import DesingP.observer.MemberObserver;
 import model.Book;
 
 public class Main extends JFrame {
@@ -100,9 +103,7 @@ public class Main extends JFrame {
             showViewRatingDialog();
         });
 
-        JButton viewLoansButton = createMenuButton("View User Loans", e -> {
-            showUserLoansDialog();
-        });
+
 
         addButtonToMenu(menuFrame, addBookButton, gbc);
         addButtonToMenu(menuFrame, addMemberButton, gbc);
@@ -110,35 +111,14 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, returnBookButton, gbc);
         addButtonToMenu(menuFrame, removeBookButton, gbc);
         addButtonToMenu(menuFrame, removeMemberButton, gbc);
-        addButtonToMenu(menuFrame, summaryButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
         addButtonToMenu(menuFrame, viewRatingButton, gbc);
-        addButtonToMenu(menuFrame, viewLoansButton, gbc);
+        addButtonToMenu(menuFrame, summaryButton, gbc);
+
 
         menuFrame.setVisible(true);
     }
-
-    private void showUserLoansDialog() {
-        String userId = JOptionPane.showInputDialog("Enter your User ID to view your loans:");
-        if (userId != null && !userId.isEmpty()) {
-            java.util.List<Book> loans = libraryFacade.getUserLoans(userId);
-            if (loans.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No loans found for user ID \"" + userId + "\"", "User Loans", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                StringBuilder loanList = new StringBuilder();
-                for (Book book : loans) {
-                    loanList.append(book.getTitle()).append(" by ").append(book.getAuthor()).append(" (").append(book.getYear()).append(")\n");
-                }
-                JTextArea textArea = new JTextArea(loanList.toString());
-                textArea.setEditable(false);
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                scrollPane.setPreferredSize(new Dimension(400, 300));
-                JOptionPane.showMessageDialog(null, scrollPane, "Your Loans", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-
 
     private JButton createMenuButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text);
@@ -172,7 +152,6 @@ public class Main extends JFrame {
             libraryFacade.addBook(title, author, year, quantity);
         }
     }
-
 
     private void addMember() {
         JTextField nameField = new JTextField();
@@ -258,12 +237,10 @@ public class Main extends JFrame {
         String title = JOptionPane.showInputDialog("Enter the title of the book to view rating:");
         if (title != null && !title.isEmpty()) {
             double rating = libraryFacade.getBookRating(title);
-            if (rating == -1) {
-                JOptionPane.showMessageDialog(null, "No book found with the title \"" + title + "\"", "Book Rating", JOptionPane.ERROR_MESSAGE);
-            } else if (rating == 0.0) {
-                JOptionPane.showMessageDialog(null, "The book \"" + title + "\" has not been rated yet.", "Book Rating", JOptionPane.INFORMATION_MESSAGE);
-            } else {
+            if (rating >= 0) {
                 JOptionPane.showMessageDialog(null, "The rating for \"" + title + "\" is: " + rating, "Book Rating", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No rating found for the book \"" + title + "\"", "Book Rating", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -273,7 +250,6 @@ public class Main extends JFrame {
         String summary = libraryFacade.getLibrarySummary().replace("\n", "<br><br>");
         summaryLabel.setText("<html>" + summary + "</html>");
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
