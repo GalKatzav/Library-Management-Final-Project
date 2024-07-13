@@ -14,7 +14,7 @@ public class LibraryFacade {
     public LibraryFacade() {
         this.library = SingletonLibrary.getInstance();
         this.librarian = new Librarian();
-        addSampleBooks(); // הוספת קריאה למתודה להוספת ספרים לדוגמה
+        addSampleBooks();
     }
 
     public void addBook(String title, String author, int year, int quantity) {
@@ -45,18 +45,6 @@ public class LibraryFacade {
         return library.getLibrarySummary();
     }
 
-    public Book cloneBook(Book book) {
-        return book.clone();
-    }
-
-    public Book findBookByTitle(String title) {
-        for (Book book : library.getBooks()) {
-            if (book.getTitle().equals(title)) {
-                return book;
-            }
-        }
-        return null;
-    }
 
     public List<Book> getAllBooks() {
         return library.getBooks();

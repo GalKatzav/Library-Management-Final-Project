@@ -3,9 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import DesingP.observer.BookObserver;
 import DesingP.facade.LibraryFacade;
-import DesingP.observer.MemberObserver;
 import DesingP.util.BookStateException;
 import model.Book;
 
@@ -305,6 +303,7 @@ public class Main extends JFrame {
         String summary = libraryFacade.getLibrarySummary().replace("\n", "<br><br>");
         summaryLabel.setText("<html>" + summary + "</html>");
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

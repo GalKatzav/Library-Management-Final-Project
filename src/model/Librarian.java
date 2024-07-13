@@ -2,7 +2,6 @@ package model;
 
 import DesingP.decorator.RatedBook;
 import DesingP.observer.BookObserver;
-import DesingP.observer.Observer;
 import DesingP.singleton.SingletonLibrary;
 import DesingP.util.BookStateException;
 
@@ -50,25 +49,25 @@ public class Librarian {
     public boolean lendBook(String title, String memberId) throws BookStateException {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
-        if (book != null && member != null) {
-            if (book.isAvailable()) {
-                book.lendCopy();
-                Loan loan = new Loan(book, member);
-                book.addLoan(loan);
-                member.addLoan(loan);
-                library.incrementLoanedBooks(); // Update loaned books count
-                return true;
-            } else {
-                throw new BookStateException("No available copies of the book: " + title);
-            }
-        }else {
-            throw new BookStateException("Book or member not found.");
+        if (book != null && member != null && book.isAvailable()) {
+            book.lendCopy();
+            Loan loan = new Loan(book, member);
+            book.addLoan(loan);
+            member.addLoan(loan);
+            library.incrementLoanedBooks(); // Update loaned books count
+            return true;
+        } else if (book == null) {
+            throw new BookStateException("Book not found: " + title);
+        } else if (member == null) {
+            throw new BookStateException("Member not found: " + memberId);
+        } else {
+            throw new BookStateException("No available copies of the book: " + title);
         }
     }
 
 
 
-    public void returnBook(String title, String memberId) throws BookStateException{
+    public void returnBook(String title, String memberId) throws BookStateException {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
         if (book != null && member != null) {
@@ -78,13 +77,14 @@ public class Librarian {
                 member.removeLoan(loan);
                 book.removeLoan(loan);
                 library.decrementLoanedBooks(); // Update loaned books count
-            } else {
-                throw new BookStateException("Loan not found for the book: " + title);
             }
-        }else {
-            throw new BookStateException("Book or member not found.");
+        } else if (book == null) {
+            throw new BookStateException("Book not found: " + title);
+        } else {
+            throw new BookStateException("Member not found: " + memberId);
         }
     }
+
 
 
 
