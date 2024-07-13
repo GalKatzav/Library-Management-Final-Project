@@ -16,5 +16,9 @@ public class RatedBook extends BookDecorator{
     public void setRating(double rating) {
         this.rating = rating;
     }
+    @Override
+    public String getTitle() {
+        return decoratedBook.getTitle() + " (Rated: " + rating + ")";
+    }
 
 }
