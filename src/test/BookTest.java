@@ -37,10 +37,21 @@ public class BookTest {
 
     @Test
     public void testAddLoan() {
+        Book book = new Book("Test Title", "Test Author", 2023, 5);
         Loan loan = new Loan(book, new Member("John Doe", "123"));
         book.addLoan(loan);
         assertEquals(1, book.getLoanHistory().size());
     }
+
+    @Test
+    public void testRemoveLoan() {
+        Book book = new Book("Test Title", "Test Author", 2023, 5);
+        Loan loan = new Loan(book, new Member("John Doe", "123"));
+        book.addLoan(loan);
+        book.removeLoan(loan);
+        assertEquals(0, book.getLoanHistory().size());
+    }
+
 
     @Test
     public void testClone() {
@@ -49,5 +60,20 @@ public class BookTest {
         assertEquals(book.getAuthor(), clonedBook.getAuthor());
         assertEquals(book.getYear(), clonedBook.getYear());
     }
+    @Test
+    public void testLendCopy() {
+        Book book = new Book("Test Title", "Test Author", 2023, 5);
+        book.lendCopy();
+        assertEquals(4, book.getQuantity());
+    }
+
+    @Test
+    public void testReturnCopy() {
+        Book book = new Book("Test Title", "Test Author", 2023, 5);
+        book.lendCopy();
+        book.returnCopy();
+        assertEquals(5, book.getQuantity());
+    }
+
 }
 
