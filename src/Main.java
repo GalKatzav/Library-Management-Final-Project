@@ -51,7 +51,7 @@ public class Main extends JFrame {
 
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
-        menuFrame.setSize(500, 550);
+        menuFrame.setSize(400, 550);
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -103,7 +103,9 @@ public class Main extends JFrame {
             showViewRatingDialog();
         });
 
-
+        JButton viewLoansButton = createMenuButton("View User Loans", e -> {
+            viewUserLoans();
+        });
 
         addButtonToMenu(menuFrame, addBookButton, gbc);
         addButtonToMenu(menuFrame, addMemberButton, gbc);
@@ -111,14 +113,36 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, returnBookButton, gbc);
         addButtonToMenu(menuFrame, removeBookButton, gbc);
         addButtonToMenu(menuFrame, removeMemberButton, gbc);
+        addButtonToMenu(menuFrame, summaryButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
         addButtonToMenu(menuFrame, viewRatingButton, gbc);
-        addButtonToMenu(menuFrame, summaryButton, gbc);
-
+        addButtonToMenu(menuFrame, viewLoansButton, gbc);
 
         menuFrame.setVisible(true);
     }
+
+    private void viewUserLoans() {
+        String memberId = JOptionPane.showInputDialog("Enter the member ID to view loans:");
+        if (memberId != null && !memberId.isEmpty()) {
+            java.util.List<Book> loans = libraryFacade.getUserLoans(memberId);
+            if (!loans.isEmpty()) {
+                StringBuilder loanList = new StringBuilder();
+                int count = 1;
+                for (Book book : loans) {
+                    loanList.append(count++).append(". ").append(book.getTitle()).append(" by ").append(book.getAuthor()).append(" (").append(book.getYear()).append(")\n");
+                }
+                JTextArea textArea = new JTextArea(loanList.toString());
+                textArea.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                scrollPane.setPreferredSize(new Dimension(400, 300));
+                JOptionPane.showMessageDialog(null, scrollPane, "User Loans", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No loans found for the member ID \"" + memberId + "\"", "User Loans", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
 
     private JButton createMenuButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text);

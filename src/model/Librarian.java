@@ -108,10 +108,14 @@ public class Librarian {
             }
         }
     }
-    public List<Loan> getUserLoans(String userId) {
+    public List<Book> getUserLoans(String userId) {
         Member member = findMemberById(userId);
         if (member != null) {
-            return member.getLoans();
+            List<Book> books = new ArrayList<>();
+            for (Loan loan : member.getLoans()) {
+                books.add(loan.getBook());
+            }
+            return books;
         }
         return new ArrayList<>();
     }
