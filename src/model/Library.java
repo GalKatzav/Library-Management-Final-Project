@@ -6,12 +6,14 @@ import java.util.List;
 public class Library {
     private List<Book> books;
     private List<Member> members;
+    private int currentlyLoanedBooks;
 
     private static Library instance;
 
     protected Library() {
         this.books = new ArrayList<>();
         this.members = new ArrayList<>();
+        this.currentlyLoanedBooks = 0;
     }
 
     public static Library getInstance() {
@@ -67,14 +69,20 @@ public class Library {
     }
 
     private int countLoanedBooks() {
-        return books.size() - countAvailableBooks();
+        return currentlyLoanedBooks;
     }
-
     private int countTotalLoans() {
         int count = 0;
         for (Book book : books) {
             count += book.getLoanHistory().size();
         }
         return count;
+    }
+    public void incrementLoanedBooks() {
+        currentlyLoanedBooks++;
+    }
+
+    public void decrementLoanedBooks() {
+        currentlyLoanedBooks--;
     }
 }

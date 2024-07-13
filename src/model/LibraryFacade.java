@@ -14,8 +14,8 @@ public class LibraryFacade {
         addSampleBooks(); // הוספת קריאה למתודה להוספת ספרים לדוגמה
     }
 
-    public void addBook(String title, String author, int year) {
-        librarian.addBook(title, author, year);
+    public void addBook(String title, String author, int year, int quantity) {
+        librarian.addBook(title, author, year, quantity);
     }
 
     public void removeBook(String title) {
@@ -30,10 +30,9 @@ public class LibraryFacade {
         librarian.removeMember(id);
     }
 
-    public void lendBook(String title, String memberId) {
-        librarian.lendBook(title, memberId);
+    public boolean lendBook(String title, String memberId) {
+        return librarian.lendBook(title, memberId);
     }
-
     public void returnBook(String title, String memberId) {
         librarian.returnBook(title, memberId);
     }
@@ -60,12 +59,13 @@ public class LibraryFacade {
     }
 
     private void addSampleBooks() {
-        addBook("The Catcher in the Rye", "J.D. Salinger", 1951);
-        addBook("To Kill a Mockingbird", "Harper Lee", 1960);
-        addBook("1984", "George Orwell", 1949);
-        addBook("Pride and Prejudice", "Jane Austen", 1813);
-        addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925);
+        addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
+        addBook("To Kill a Mockingbird", "Harper Lee", 1960, 5);
+        addBook("1984", "George Orwell", 1949, 5);
+        addBook("Pride and Prejudice", "Jane Austen", 1813, 5);
+        addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925, 5);
     }
+
     public void rateBook(String title, double rating) {
         librarian.rateBook(title, rating);
     }
@@ -79,10 +79,8 @@ public class LibraryFacade {
         }
         return -1; // Book not found
     }
+
     public List<Book> getUserLoans(String userId) {
         return librarian.getUserLoans(userId);
     }
-
-
-
 }

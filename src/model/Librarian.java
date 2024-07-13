@@ -12,8 +12,8 @@ public class Librarian {
         this.library = SingletonLibrary.getInstance();
     }
 
-    public void addBook(String title, String author, int year) {
-        Book book = new Book(title, author, year);
+    public void addBook(String title, String author, int year, int quantity) {
+        Book book = new Book(title, author, year, quantity);
         library.addBook(book);
     }
 
@@ -36,24 +36,36 @@ public class Librarian {
         }
     }
 
-    public void lendBook(String title, String memberId) {
+    public boolean lendBook(String title, String memberId) {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
         if (book != null && member != null && book.isAvailable()) {
-            book.setAvailable(false);
+            book.lendCopy();
             Loan loan = new Loan(book, member);
             book.addLoan(loan);
             member.addLoan(loan);
+            library.incrementLoanedBooks(); // Update loaned books count
+            return true;
         }
+        return false;
     }
+
 
     public void returnBook(String title, String memberId) {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
         if (book != null && member != null) {
-            book.setAvailable(true);
+            book.returnCopy();
+            Loan loan = member.findLoanByBook(title);
+            if (loan != null) {
+                member.removeLoan(loan);
+                book.removeLoan(loan);
+                library.decrementLoanedBooks(); // Update loaned books count
+            }
         }
     }
+
+
 
     protected Book findBookByTitle(String title) {
         for (Book book : library.getBooks()) {

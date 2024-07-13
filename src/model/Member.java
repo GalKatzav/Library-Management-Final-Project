@@ -33,4 +33,16 @@ public class Member {
     public void addLoan(Loan loan) {
         loans.add(loan);
     }
+
+    public Loan findLoanByBook(String title) {
+        for (Loan loan : loans) {
+            if (loan.getBook().getTitle().equals(title)) {
+                return loan;
+            }
+        }
+        return null;
+    }
+    public void removeLoan(Loan loan) {
+        loans.remove(loan);
+    }
 }

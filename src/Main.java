@@ -155,10 +155,12 @@ public class Main extends JFrame {
         JTextField titleField = new JTextField();
         JTextField authorField = new JTextField();
         JTextField yearField = new JTextField();
+        JTextField quantityField = new JTextField();
         Object[] message = {
                 "Title:", titleField,
                 "Author:", authorField,
-                "Year:", yearField
+                "Year:", yearField,
+                "Quantity:", quantityField
         };
 
         int option = JOptionPane.showConfirmDialog(null, message, "Add New Book", JOptionPane.OK_CANCEL_OPTION);
@@ -166,9 +168,11 @@ public class Main extends JFrame {
             String title = titleField.getText();
             String author = authorField.getText();
             int year = Integer.parseInt(yearField.getText());
-            libraryFacade.addBook(title, author, year);
+            int quantity = Integer.parseInt(quantityField.getText());
+            libraryFacade.addBook(title, author, year, quantity);
         }
     }
+
 
     private void addMember() {
         JTextField nameField = new JTextField();
@@ -269,6 +273,7 @@ public class Main extends JFrame {
         String summary = libraryFacade.getLibrarySummary().replace("\n", "<br><br>");
         summaryLabel.setText("<html>" + summary + "</html>");
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
