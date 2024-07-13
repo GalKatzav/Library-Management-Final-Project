@@ -20,5 +20,12 @@ public class RatedBook extends BookDecorator{
     public String getTitle() {
         return decoratedBook.getTitle() + " (Rated: " + rating + ")";
     }
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        RatedBook ratedBook = (RatedBook) obj;
+        return Double.compare(ratedBook.rating, rating) == 0 &&
+                decoratedBook.equals(ratedBook.decoratedBook);
+    }
 }

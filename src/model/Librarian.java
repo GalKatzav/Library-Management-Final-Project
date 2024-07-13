@@ -52,9 +52,9 @@ public class Librarian {
         }
     }
 
-    private Book findBookByTitle(String title) {
+    protected Book findBookByTitle(String title) {
         for (Book book : library.getBooks()) {
-            if (book.getTitle().equals(title)) {
+            if (book.getTitle().contains(title) || book instanceof RatedBook && ((RatedBook) book).getTitle().equals(title)) {
                 return book;
             }
         }
@@ -77,4 +77,5 @@ public class Librarian {
             library.addBook(ratedBook);
         }
     }
+
 }

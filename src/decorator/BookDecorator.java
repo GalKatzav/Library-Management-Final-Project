@@ -22,4 +22,12 @@ public class BookDecorator extends Book{
     public int getYear() {
         return decoratedBook.getYear();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BookDecorator that = (BookDecorator) obj;
+        return decoratedBook.equals(that.decoratedBook);
+    }
 }

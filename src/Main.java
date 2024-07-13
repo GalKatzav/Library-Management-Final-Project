@@ -48,7 +48,7 @@ public class Main extends JFrame {
 
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
-        menuFrame.setSize(350, 450);
+        menuFrame.setSize(400, 500);
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -96,6 +96,10 @@ public class Main extends JFrame {
             updateSummaryLabel(summaryLabel);
         });
 
+        JButton viewRatingButton = createMenuButton("View Book Rating", e -> {
+            showViewRatingDialog();
+        });
+
         addButtonToMenu(menuFrame, addBookButton, gbc);
         addButtonToMenu(menuFrame, addMemberButton, gbc);
         addButtonToMenu(menuFrame, lendBookButton, gbc);
@@ -105,6 +109,7 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, summaryButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
+        addButtonToMenu(menuFrame, viewRatingButton, gbc);
 
         menuFrame.setVisible(true);
     }
@@ -218,6 +223,21 @@ public class Main extends JFrame {
             }
         }
     }
+
+    private void showViewRatingDialog() {
+        String title = JOptionPane.showInputDialog("Enter the title of the book to view rating:");
+        if (title != null && !title.isEmpty()) {
+            double rating = libraryFacade.getBookRating(title);
+            if (rating == -1) {
+                JOptionPane.showMessageDialog(null, "No book found with the title \"" + title + "\"", "Book Rating", JOptionPane.ERROR_MESSAGE);
+            } else if (rating == 0.0) {
+                JOptionPane.showMessageDialog(null, "The book \"" + title + "\" has not been rated yet.", "Book Rating", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "The rating for \"" + title + "\" is: " + rating, "Book Rating", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
 
     private void updateSummaryLabel(JLabel summaryLabel) {
         String summary = libraryFacade.getLibrarySummary().replace("\n", "<br><br>");

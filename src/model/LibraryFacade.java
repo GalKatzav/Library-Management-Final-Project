@@ -1,5 +1,7 @@
 package model;
 
+import decorator.RatedBook;
+
 import java.util.List;
 
 public class LibraryFacade {
@@ -67,4 +69,17 @@ public class LibraryFacade {
     public void rateBook(String title, double rating) {
         librarian.rateBook(title, rating);
     }
+
+    public double getBookRating(String title) {
+        Book book = librarian.findBookByTitle(title);
+        if (book instanceof RatedBook) {
+            return ((RatedBook) book).getRating();
+        } else if (book != null) {
+            return 0.0; // Book found but not rated
+        }
+        return -1; // Book not found
+    }
+
+
+
 }
