@@ -48,7 +48,7 @@ public class Main extends JFrame {
 
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
-        menuFrame.setSize(300, 400);
+        menuFrame.setSize(350, 450);
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -57,93 +57,67 @@ public class Main extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(10, 10, 10, 10); // הוספת מרווחים בין הכפתורים
 
-        JButton addBookButton = new JButton("Add Book");
-        addBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addBook();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton addBookButton = createMenuButton("Add Book", e -> {
+            addBook();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton addMemberButton = new JButton("Add Member");
-        addMemberButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addMember();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton addMemberButton = createMenuButton("Add Member", e -> {
+            addMember();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton lendBookButton = new JButton("Lend Book");
-        lendBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lendBook();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton lendBookButton = createMenuButton("Lend Book", e -> {
+            lendBook();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton returnBookButton = new JButton("Return Book");
-        returnBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                returnBook();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton returnBookButton = createMenuButton("Return Book", e -> {
+            returnBook();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton removeBookButton = new JButton("Remove Book");
-        removeBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeBook();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton removeBookButton = createMenuButton("Remove Book", e -> {
+            removeBook();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton removeMemberButton = new JButton("Remove Member");
-        removeMemberButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeMember();
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton removeMemberButton = createMenuButton("Remove Member", e -> {
+            removeMember();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton summaryButton = new JButton("Update Summary");
-        summaryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateSummaryLabel(summaryLabel);
-            }
+        JButton summaryButton = createMenuButton("Update Summary", e -> updateSummaryLabel(summaryLabel));
+
+        JButton viewBooksButton = createMenuButton("View All Books", e -> viewAllBooks());
+
+        JButton rateBookButton = createMenuButton("Rate Book", e -> {
+            showRateBookDialog();
+            updateSummaryLabel(summaryLabel);
         });
 
-        JButton viewBooksButton = new JButton("View All Books");
-        viewBooksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                viewAllBooks();
-            }
-        });
-
-        menuFrame.add(addBookButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(addMemberButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(lendBookButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(returnBookButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(removeBookButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(removeMemberButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(summaryButton, gbc);
-        gbc.gridy++;
-        menuFrame.add(viewBooksButton, gbc);
+        addButtonToMenu(menuFrame, addBookButton, gbc);
+        addButtonToMenu(menuFrame, addMemberButton, gbc);
+        addButtonToMenu(menuFrame, lendBookButton, gbc);
+        addButtonToMenu(menuFrame, returnBookButton, gbc);
+        addButtonToMenu(menuFrame, removeBookButton, gbc);
+        addButtonToMenu(menuFrame, removeMemberButton, gbc);
+        addButtonToMenu(menuFrame, summaryButton, gbc);
+        addButtonToMenu(menuFrame, viewBooksButton, gbc);
+        addButtonToMenu(menuFrame, rateBookButton, gbc);
 
         menuFrame.setVisible(true);
+    }
+
+    private JButton createMenuButton(String text, ActionListener actionListener) {
+        JButton button = new JButton(text);
+        button.addActionListener(actionListener);
+        return button;
+    }
+
+    private void addButtonToMenu(JFrame menuFrame, JButton button, GridBagConstraints gbc) {
+        menuFrame.add(button, gbc);
+        gbc.gridy++;
     }
 
     private void addBook() {
@@ -215,6 +189,34 @@ public class Main extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 300));
         JOptionPane.showMessageDialog(null, scrollPane, "All Books", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showRateBookDialog() {
+        JTextField titleField = new JTextField(10);
+        JTextField ratingField = new JTextField(10);
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Title:"));
+        panel.add(titleField);
+        panel.add(Box.createHorizontalStrut(15)); // מרווח אופקי
+        panel.add(new JLabel("Rating (0-10):"));
+        panel.add(ratingField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Rate Book", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String title = titleField.getText();
+            double rating;
+            try {
+                rating = Double.parseDouble(ratingField.getText());
+                if (rating < 0 || rating > 10) {
+                    throw new NumberFormatException();
+                }
+                libraryFacade.rateBook(title, rating);
+                JOptionPane.showMessageDialog(null, "Book rated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid rating between 0 and 10.", "Invalid Rating", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void updateSummaryLabel(JLabel summaryLabel) {
