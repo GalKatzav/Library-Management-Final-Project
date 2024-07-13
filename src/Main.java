@@ -112,11 +112,12 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, returnBookButton, gbc);
         addButtonToMenu(menuFrame, removeBookButton, gbc);
         addButtonToMenu(menuFrame, removeMemberButton, gbc);
-        addButtonToMenu(menuFrame, summaryButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
         addButtonToMenu(menuFrame, viewRatingButton, gbc);
         addButtonToMenu(menuFrame, viewLoansButton, gbc);
+        addButtonToMenu(menuFrame, summaryButton, gbc);
+
 
         menuFrame.setVisible(true);
     }
