@@ -64,4 +64,7 @@ public class LibraryFacade {
         addBook("Pride and Prejudice", "Jane Austen", 1813);
         addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925);
     }
+    public void rateBook(String title, double rating) {
+        librarian.rateBook(title, rating);
+    }
 }
