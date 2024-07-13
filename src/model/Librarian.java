@@ -72,9 +72,13 @@ public class Librarian {
     public void rateBook(String title, double rating) {
         Book book = findBookByTitle(title);
         if (book != null) {
-            RatedBook ratedBook = new RatedBook(book, rating);
-            library.removeBook(book);
-            library.addBook(ratedBook);
+            if (book instanceof RatedBook) {
+                ((RatedBook) book).setRating(rating);
+            } else {
+                RatedBook ratedBook = new RatedBook(book, rating);
+                library.removeBook(book);
+                library.addBook(ratedBook);
+            }
         }
     }
 
