@@ -1,5 +1,7 @@
 package model;
 
+import decorator.RatedBook;
+
 public class Librarian {
     private Library library;
 
@@ -66,5 +68,13 @@ public class Librarian {
             }
         }
         return null;
+    }
+    public void rateBook(String title, double rating) {
+        Book book = findBookByTitle(title);
+        if (book != null) {
+            RatedBook ratedBook = new RatedBook(book, rating);
+            library.removeBook(book);
+            library.addBook(ratedBook);
+        }
     }
 }
