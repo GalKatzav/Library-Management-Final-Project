@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import DesingP.observer.BookObserver;
 import DesingP.facade.LibraryFacade;
 import DesingP.observer.MemberObserver;
+import DesingP.util.BookStateException;
 import model.Book;
 
 public class Main extends JFrame {
@@ -125,23 +126,28 @@ public class Main extends JFrame {
     private void viewUserLoans() {
         String memberId = JOptionPane.showInputDialog("Enter the member ID to view loans:");
         if (memberId != null && !memberId.isEmpty()) {
-            java.util.List<Book> loans = libraryFacade.getUserLoans(memberId);
-            if (!loans.isEmpty()) {
-                StringBuilder loanList = new StringBuilder();
-                int count = 1;
-                for (Book book : loans) {
-                    loanList.append(count++).append(". ").append(book.getTitle()).append(" by ").append(book.getAuthor()).append(" (").append(book.getYear()).append(")\n");
+            try {
+                java.util.List<Book> loans = libraryFacade.getUserLoans(memberId);
+                if (!loans.isEmpty()) {
+                    StringBuilder loanList = new StringBuilder();
+                    int count = 1;
+                    for (Book book : loans) {
+                        loanList.append(count++).append(". ").append(book.getTitle()).append(" by ").append(book.getAuthor()).append(" (").append(book.getYear()).append(")\n");
+                    }
+                    JTextArea textArea = new JTextArea(loanList.toString());
+                    textArea.setEditable(false);
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setPreferredSize(new Dimension(400, 300));
+                    JOptionPane.showMessageDialog(null, scrollPane, "User Loans", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No loans found for the member ID \"" + memberId + "\"", "User Loans", JOptionPane.ERROR_MESSAGE);
                 }
-                JTextArea textArea = new JTextArea(loanList.toString());
-                textArea.setEditable(false);
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                scrollPane.setPreferredSize(new Dimension(400, 300));
-                JOptionPane.showMessageDialog(null, scrollPane, "User Loans", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "No loans found for the member ID \"" + memberId + "\"", "User Loans", JOptionPane.ERROR_MESSAGE);
+            } catch (BookStateException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
 
 
     private JButton createMenuButton(String text, ActionListener actionListener) {
@@ -196,23 +202,43 @@ public class Main extends JFrame {
     private void lendBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to lend:");
         String memberId = JOptionPane.showInputDialog("Enter the member ID:");
-        libraryFacade.lendBook(title, memberId);
+        try {
+            libraryFacade.lendBook(title, memberId);
+            JOptionPane.showMessageDialog(null, "Book lent successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (BookStateException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void returnBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to return:");
         String memberId = JOptionPane.showInputDialog("Enter the member ID:");
-        libraryFacade.returnBook(title, memberId);
+        try {
+            libraryFacade.returnBook(title, memberId);
+            JOptionPane.showMessageDialog(null, "Book returned successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (BookStateException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void removeBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to remove:");
-        libraryFacade.removeBook(title);
+        try {
+            libraryFacade.removeBook(title);
+            JOptionPane.showMessageDialog(null, "Book removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (BookStateException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void removeMember() {
         String id = JOptionPane.showInputDialog("Enter the member ID to remove:");
-        libraryFacade.removeMember(id);
+        try {
+            libraryFacade.removeMember(id);
+            JOptionPane.showMessageDialog(null, "Member removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (BookStateException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void viewAllBooks() {
@@ -251,20 +277,25 @@ public class Main extends JFrame {
                 }
                 libraryFacade.rateBook(title, rating);
                 JOptionPane.showMessageDialog(null, "Book rated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Please enter a valid rating between 0 and 10.", "Invalid Rating", JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException | BookStateException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Invalid Rating", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
+
     private void showViewRatingDialog() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to view rating:");
         if (title != null && !title.isEmpty()) {
-            double rating = libraryFacade.getBookRating(title);
-            if (rating >= 0) {
-                JOptionPane.showMessageDialog(null, "The rating for \"" + title + "\" is: " + rating, "Book Rating", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "No rating found for the book \"" + title + "\"", "Book Rating", JOptionPane.ERROR_MESSAGE);
+            try {
+                double rating = libraryFacade.getBookRating(title);
+                if (rating >= 0) {
+                    JOptionPane.showMessageDialog(null, "The rating for \"" + title + "\" is: " + rating, "Book Rating", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No rating found for the book \"" + title + "\"", "Book Rating", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (BookStateException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

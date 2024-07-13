@@ -4,6 +4,7 @@ import DesingP.decorator.RatedBook;
 import DesingP.observer.BookObserver;
 import DesingP.observer.Observer;
 import DesingP.singleton.SingletonLibrary;
+import DesingP.util.BookStateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,13 @@ public class Librarian {
         library.addBook(book);
     }
 
-    public void removeObserverFromBook(String title, Observer observer) {
-        Book book = findBookByTitle(title);
-        if (book != null) {
-            book.removeObserver(observer);
-        }
-    }
 
-    public void removeBook(String title) {
+    public void removeBook(String title) throws BookStateException{
         Book book = findBookByTitle(title);
         if (book != null) {
             library.removeBook(book);
+        }else {
+            throw new BookStateException("Book not found: " + title);
         }
     }
 
@@ -41,29 +38,37 @@ public class Librarian {
         library.addMember(member);
     }
 
-    public void removeMember(String id) {
+    public void removeMember(String id) throws BookStateException{
         Member member = findMemberById(id);
         if (member != null) {
             library.removeMember(member);
+        }else {
+            throw new BookStateException("Member not found: " + id);
         }
     }
 
-    public boolean lendBook(String title, String memberId) {
+    public boolean lendBook(String title, String memberId) throws BookStateException {
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
-        if (book != null && member != null && book.isAvailable()) {
-            book.lendCopy();
-            Loan loan = new Loan(book, member);
-            book.addLoan(loan);
-            member.addLoan(loan);
-            library.incrementLoanedBooks(); // Update loaned books count
-            return true;
+        if (book != null && member != null) {
+            if (book.isAvailable()) {
+                book.lendCopy();
+                Loan loan = new Loan(book, member);
+                book.addLoan(loan);
+                member.addLoan(loan);
+                library.incrementLoanedBooks(); // Update loaned books count
+                return true;
+            } else {
+                throw new BookStateException("No available copies of the book: " + title);
+            }
+        }else {
+            throw new BookStateException("Book or member not found.");
         }
-        return false;
     }
 
 
-    public void returnBook(String title, String memberId) {
+
+    public void returnBook(String title, String memberId) throws BookStateException{
         Book book = findBookByTitle(title);
         Member member = findMemberById(memberId);
         if (book != null && member != null) {
@@ -73,7 +78,11 @@ public class Librarian {
                 member.removeLoan(loan);
                 book.removeLoan(loan);
                 library.decrementLoanedBooks(); // Update loaned books count
+            } else {
+                throw new BookStateException("Loan not found for the book: " + title);
             }
+        }else {
+            throw new BookStateException("Book or member not found.");
         }
     }
 
@@ -96,7 +105,7 @@ public class Librarian {
         }
         return null;
     }
-    public void rateBook(String title, double rating) {
+    public void rateBook(String title, double rating) throws BookStateException{
         Book book = findBookByTitle(title);
         if (book != null) {
             if (book instanceof RatedBook) {
@@ -106,9 +115,11 @@ public class Librarian {
                 library.removeBook(book);
                 library.addBook(ratedBook);
             }
+        }else {
+            throw new BookStateException("Book not found: " + title);
         }
     }
-    public List<Book> getUserLoans(String userId) {
+    public List<Book> getUserLoans(String userId) throws BookStateException{
         Member member = findMemberById(userId);
         if (member != null) {
             List<Book> books = new ArrayList<>();
@@ -116,9 +127,8 @@ public class Librarian {
                 books.add(loan.getBook());
             }
             return books;
+        } else {
+            throw new BookStateException("Member not found: " + userId);
         }
-        return new ArrayList<>();
     }
-
-
 }

@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import DesingP.util.BookStateException;
 import model.Book;
 import model.Librarian;
 import model.Library;
@@ -41,26 +42,38 @@ public class LibrarianTest {
     public void testLibrarianRemoveBook() {
         Librarian librarian = new Librarian();
         librarian.addBook("Test Title", "Test Author", 2023, 5);
-        librarian.removeBook("Test Title");
+        try {
+            librarian.removeBook("Test Title");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         Library library = SingletonLibrary.getInstance();
         assertEquals(0, library.getBooks().size());
     }
+
     @Test
     public void testLibrarianLendBook() {
         Librarian librarian = new Librarian();
         librarian.addBook("Test Title", "Test Author", 2023, 5);
         librarian.addMember("John Doe", "123");
-        boolean result = librarian.lendBook("Test Title", "123");
-        assertTrue(result);
-        Library library = SingletonLibrary.getInstance();
-        assertEquals(4, library.getBooks().get(0).getQuantity());
+        try {
+            boolean result = librarian.lendBook("Test Title", "123");
+            assertTrue(result);
+            Library library = SingletonLibrary.getInstance();
+            assertEquals(4, library.getBooks().get(0).getQuantity());
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
     }
-
 
     @Test
     public void testRemoveBook() {
         librarian.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
-        librarian.removeBook("The Catcher in the Rye");
+        try {
+            librarian.removeBook("The Catcher in the Rye");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         assertEquals(0, library.getBooks().size());
     }
 
@@ -73,7 +86,11 @@ public class LibrarianTest {
     @Test
     public void testRemoveMember() {
         librarian.addMember("John Doe", "123");
-        librarian.removeMember("123");
+        try {
+            librarian.removeMember("123");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         assertEquals(0, library.getMembers().size());
     }
 
@@ -81,7 +98,11 @@ public class LibrarianTest {
     public void testLendBook() {
         librarian.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
         librarian.addMember("John Doe", "123");
-        librarian.lendBook("The Catcher in the Rye", "123");
+        try {
+            librarian.lendBook("The Catcher in the Rye", "123");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         Book book = library.getBooks().get(0);
         assertEquals(4, book.getQuantity());
     }
@@ -90,8 +111,12 @@ public class LibrarianTest {
     public void testReturnBook() {
         librarian.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
         librarian.addMember("John Doe", "123");
-        librarian.lendBook("The Catcher in the Rye", "123");
-        librarian.returnBook("The Catcher in the Rye", "123");
+        try {
+            librarian.lendBook("The Catcher in the Rye", "123");
+            librarian.returnBook("The Catcher in the Rye", "123");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         Book book = library.getBooks().get(0);
         assertEquals(5, book.getQuantity());
     }
@@ -101,8 +126,14 @@ public class LibrarianTest {
         librarian.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 1);
         librarian.addMember("John Doe", "123");
         librarian.addMember("Jane Doe", "456");
-        librarian.lendBook("The Catcher in the Rye", "123");
-        assertFalse(librarian.lendBook("The Catcher in the Rye", "456"));
+
+        try {
+            librarian.lendBook("The Catcher in the Rye", "123");
+            boolean result = librarian.lendBook("The Catcher in the Rye", "456");
+            fail("Expected BookStateException not thrown");
+        } catch (BookStateException e) {
+            assertEquals("No available copies of the book: The Catcher in the Rye", e.getMessage());
+        }
     }
 
 }

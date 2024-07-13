@@ -1,6 +1,7 @@
 package DesingP.facade;
 
 import DesingP.decorator.RatedBook;
+import DesingP.util.BookStateException;
 import model.*;
 import DesingP.singleton.SingletonLibrary;
 
@@ -20,7 +21,7 @@ public class LibraryFacade {
         librarian.addBook(title, author, year, quantity);
     }
 
-    public void removeBook(String title) {
+    public void removeBook(String title) throws BookStateException {
         librarian.removeBook(title);
     }
 
@@ -28,15 +29,15 @@ public class LibraryFacade {
         librarian.addMember(name, id);
     }
 
-    public void removeMember(String id) {
+    public void removeMember(String id) throws BookStateException {
         librarian.removeMember(id);
     }
 
-    public boolean lendBook(String title, String memberId) {
+    public boolean lendBook(String title, String memberId) throws BookStateException {
         return librarian.lendBook(title, memberId);
     }
 
-    public void returnBook(String title, String memberId) {
+    public void returnBook(String title, String memberId) throws BookStateException {
         librarian.returnBook(title, memberId);
     }
 
@@ -69,11 +70,11 @@ public class LibraryFacade {
         addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925, 5);
     }
 
-    public void rateBook(String title, double rating) {
+    public void rateBook(String title, double rating) throws BookStateException {
         librarian.rateBook(title, rating);
     }
 
-    public double getBookRating(String title) {
+    public double getBookRating(String title) throws BookStateException {
         Book book = librarian.findBookByTitle(title);
         if (book instanceof RatedBook) {
             return ((RatedBook) book).getRating();
@@ -83,7 +84,7 @@ public class LibraryFacade {
         return -1; // Book not found
     }
 
-    public List<Book> getUserLoans(String userId) {
+    public List<Book> getUserLoans(String userId) throws BookStateException{
         return librarian.getUserLoans(userId);
     }
 }
