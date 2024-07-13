@@ -30,6 +30,34 @@ public class LibrarianTest {
     }
 
     @Test
+    public void testLibrarianAddBook() {
+        Librarian librarian = new Librarian();
+        librarian.addBook("Test Title", "Test Author", 2023, 5);
+        Library library = SingletonLibrary.getInstance();
+        assertEquals(1, library.getBooks().size());
+    }
+
+    @Test
+    public void testLibrarianRemoveBook() {
+        Librarian librarian = new Librarian();
+        librarian.addBook("Test Title", "Test Author", 2023, 5);
+        librarian.removeBook("Test Title");
+        Library library = SingletonLibrary.getInstance();
+        assertEquals(0, library.getBooks().size());
+    }
+    @Test
+    public void testLibrarianLendBook() {
+        Librarian librarian = new Librarian();
+        librarian.addBook("Test Title", "Test Author", 2023, 5);
+        librarian.addMember("John Doe", "123");
+        boolean result = librarian.lendBook("Test Title", "123");
+        assertTrue(result);
+        Library library = SingletonLibrary.getInstance();
+        assertEquals(4, library.getBooks().get(0).getQuantity());
+    }
+
+
+    @Test
     public void testRemoveBook() {
         librarian.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 5);
         librarian.removeBook("The Catcher in the Rye");
