@@ -2,6 +2,9 @@ package model;
 
 import decorator.RatedBook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Librarian {
     private Library library;
 
@@ -81,5 +84,13 @@ public class Librarian {
             }
         }
     }
+    public List<Book> getUserLoans(String userId) {
+        Member member = findMemberById(userId);
+        if (member != null) {
+            return member.getLoans();
+        }
+        return new ArrayList<>();
+    }
+
 
 }

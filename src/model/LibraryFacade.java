@@ -79,6 +79,9 @@ public class LibraryFacade {
         }
         return -1; // Book not found
     }
+    public List<Book> getUserLoans(String userId) {
+        return librarian.getUserLoans(userId);
+    }
 
 
 

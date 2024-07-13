@@ -22,8 +22,12 @@ public class Member {
         return id;
     }
 
-    public List<Loan> getLoans() {
-        return loans;
+    public List<Book> getLoans() {
+        List<Book> books = new ArrayList<>();
+        for (Loan loan : loans) {
+            books.add(loan.getBook());
+        }
+        return books;
     }
 
     public void addLoan(Loan loan) {
