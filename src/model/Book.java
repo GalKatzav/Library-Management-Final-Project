@@ -11,14 +11,12 @@ public class Book extends Observable implements Cloneable {
     private int year;
     private int quantity;
     private List<Loan> loanHistory;
-    private int borrowedQuantity;
 
     public Book(String title, String author, int year, int quantity) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.quantity = quantity;
-        this.borrowedQuantity = 0;
         this.loanHistory = new ArrayList<>();
     }
 
@@ -35,14 +33,6 @@ public class Book extends Observable implements Cloneable {
         return year;
     }
 
-    public boolean isAvailable() {
-        return quantity > 0;
-    }
-
-    public int getBorrowedQuantity() {
-        return borrowedQuantity;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -54,13 +44,11 @@ public class Book extends Observable implements Cloneable {
     public void lendCopy() {
         if (quantity > 0) {
             quantity--;
-            notifyObservers("Book " + title + " lent. Remaining copies: " + quantity);
         }
     }
 
     public void returnCopy() {
         quantity++;
-        notifyObservers("Book " + title + " returned. Remaining copies: " + quantity);
     }
 
     public void addLoan(Loan loan) {
@@ -81,6 +69,18 @@ public class Book extends Observable implements Cloneable {
             return (Book) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(); // Can't happen
+        }
+    }
+
+    public boolean isAvailable() {
+        return quantity > 0;
+    }
+
+    public void setAvailable(boolean available) {
+        if (available) {
+            quantity = Math.max(quantity, 1);
+        } else {
+            quantity = 0;
         }
     }
 }

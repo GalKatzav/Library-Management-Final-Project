@@ -28,9 +28,10 @@ public class BookTest {
 
     @Test
     public void testSetAvailable() {
-        book.lendCopy();
+        Book book = new Book("Test Title", "Test Author", 2023, 1);
+        book.setAvailable(false);
         assertFalse(book.isAvailable());
-        book.returnCopy();
+        book.setAvailable(true);
         assertTrue(book.isAvailable());
     }
 
