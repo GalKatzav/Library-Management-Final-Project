@@ -42,9 +42,6 @@ public class Book implements Cloneable{
     public void setAvailable(boolean available) {
         this.available = available;
     }
-    public int getBorrowedQuantity() {
-        return borrowedQuantity;
-    }
 
     public int getQuantity() {
         return quantity;
