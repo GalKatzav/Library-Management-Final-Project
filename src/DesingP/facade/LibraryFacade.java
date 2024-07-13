@@ -1,7 +1,6 @@
 package DesingP.facade;
 
 import DesingP.decorator.RatedBook;
-import DesingP.observer.Observer;
 import model.*;
 import DesingP.singleton.SingletonLibrary;
 

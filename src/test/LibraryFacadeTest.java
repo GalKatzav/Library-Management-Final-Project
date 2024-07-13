@@ -76,5 +76,25 @@ public class LibraryFacadeTest {
         libraryFacade.lendBook("The Catcher in the Rye", "123");
         assertFalse(libraryFacade.lendBook("The Catcher in the Rye", "456"));
     }
+    @Test
+    public void testFacadeAddBook() {
+        libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
+        assertEquals(1, library.getBooks().size());
+        assertEquals(5, library.getBooks().get(0).getQuantity()); // בדיקת הכמות של הספרים
+    }
+    @Test
+    public void testFacadeRemoveBook() {
+        libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
+        libraryFacade.removeBook("Book Title 1");
+        assertEquals(0, library.getBooks().size());
+    }
+    @Test
+    public void testFacadeLendBook() {
+        libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
+        libraryFacade.addMember("John Doe", "123");
+        boolean result = libraryFacade.lendBook("Book Title 1", "123");
+        assertTrue(result);
+        assertEquals(4, library.getBooks().get(0).getQuantity());
+    }
 
 }
