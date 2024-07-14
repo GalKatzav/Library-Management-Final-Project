@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import model.Book;
 import model.Loan;
 import model.Member;
+import DesingP.util.BookStateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,18 +62,18 @@ public class BookTest {
         assertEquals(book.getYear(), clonedBook.getYear());
     }
     @Test
-    public void testLendCopy() {
+    public void testLendCopy() throws BookStateException {
         Book book = new Book("Test Title", "Test Author", 2023, 5);
         book.lendCopy();
-        assertEquals(4, book.getQuantity());
+        assertEquals(4, book.getAvailableQuantity()); // שינוי לשימוש ב-getAvailableQuantity
     }
 
     @Test
-    public void testReturnCopy() {
+    public void testReturnCopy() throws BookStateException {
         Book book = new Book("Test Title", "Test Author", 2023, 5);
         book.lendCopy();
         book.returnCopy();
-        assertEquals(5, book.getQuantity());
+        assertEquals(5, book.getAvailableQuantity()); // שינוי לשימוש ב-getAvailableQuantity
     }
 
 }
