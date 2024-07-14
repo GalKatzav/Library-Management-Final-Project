@@ -45,6 +45,7 @@ public class Book extends Observable implements Cloneable {
     public int getBorrowedQuantity() {
         return borrowedQuantity;
     }
+
     public int getAvailableQuantity() {
         return quantity - borrowedQuantity;
     }
@@ -63,9 +64,11 @@ public class Book extends Observable implements Cloneable {
         }
     }
 
-    public void returnCopy() {
+    public void returnCopy() throws BookStateException {
         if (borrowedQuantity > 0) {
             borrowedQuantity--;
+        } else {
+            throw new BookStateException("No borrowed copies to return for the book: " + title);
         }
     }
 

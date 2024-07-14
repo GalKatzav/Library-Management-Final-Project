@@ -45,7 +45,7 @@ public class BookDecorator extends Book {
     }
 
     @Override
-    public void returnCopy() {
+    public void returnCopy() throws BookStateException {
         decoratedBook.returnCopy();
     }
 

@@ -62,18 +62,26 @@ public class BookTest {
         assertEquals(book.getYear(), clonedBook.getYear());
     }
     @Test
-    public void testLendCopy() throws BookStateException {
-        Book book = new Book("Test Title", "Test Author", 2023, 5);
-        book.lendCopy();
-        assertEquals(4, book.getAvailableQuantity()); // שינוי לשימוש ב-getAvailableQuantity
+    public void testLendCopy() {
+        try {
+            Book book = new Book("Test Title", "Test Author", 2023, 5);
+            book.lendCopy();
+            assertEquals(1, book.getBorrowedQuantity());
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
     }
 
     @Test
-    public void testReturnCopy() throws BookStateException {
-        Book book = new Book("Test Title", "Test Author", 2023, 5);
-        book.lendCopy();
-        book.returnCopy();
-        assertEquals(5, book.getAvailableQuantity()); // שינוי לשימוש ב-getAvailableQuantity
+    public void testReturnCopy() {
+        try {
+            Book book = new Book("Test Title", "Test Author", 2023, 5);
+            book.lendCopy();
+            book.returnCopy();
+            assertEquals(0, book.getBorrowedQuantity());
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
     }
 
 }

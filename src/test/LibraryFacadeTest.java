@@ -72,8 +72,10 @@ public class LibraryFacadeTest {
             fail("BookStateException thrown: " + e.getMessage());
         }
         Book book = library.getBooks().get(0);
-        assertEquals(4, book.getQuantity());
+        assertEquals(1, book.getBorrowedQuantity());
+        assertEquals(4, book.getAvailableQuantity());
     }
+
 
     @Test
     public void testReturnBook() {
