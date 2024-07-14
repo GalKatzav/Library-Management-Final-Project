@@ -43,14 +43,18 @@ public class LibraryFacadeTest {
 
     @Test
     public void testAddMember() {
-        libraryFacade.addMember("Member 1", "ID1");
+        try {
+            libraryFacade.addMember("Member 1", "ID1");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
         assertEquals(1, library.getMembers().size());
     }
 
     @Test
     public void testRemoveMember() {
-        libraryFacade.addMember("Member 1", "ID1");
         try {
+            libraryFacade.addMember("Member 1", "ID1");
             libraryFacade.removeMember("ID1");
         } catch (BookStateException e) {
             fail("BookStateException thrown: " + e.getMessage());
@@ -60,9 +64,9 @@ public class LibraryFacadeTest {
 
     @Test
     public void testLendBook() {
-        libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
-        libraryFacade.addMember("Member 1", "ID1");
         try {
+            libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
+            libraryFacade.addMember("Member 1", "ID1");
             libraryFacade.lendBook("Book Title 1", "ID1");
         } catch (BookStateException e) {
             fail("BookStateException thrown: " + e.getMessage());
@@ -73,9 +77,9 @@ public class LibraryFacadeTest {
 
     @Test
     public void testReturnBook() {
-        libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
-        libraryFacade.addMember("Member 1", "ID1");
         try {
+            libraryFacade.addBook("Book Title 1", "Author 1", 2001, 5);
+            libraryFacade.addMember("Member 1", "ID1");
             libraryFacade.lendBook("Book Title 1", "ID1");
             libraryFacade.returnBook("Book Title 1", "ID1");
         } catch (BookStateException e) {
@@ -87,11 +91,11 @@ public class LibraryFacadeTest {
 
     @Test
     public void testLendBookWhenNoCopiesAvailable() {
-        libraryFacade.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 1);
-        libraryFacade.addMember("John Doe", "123");
-        libraryFacade.addMember("Jane Doe", "456");
-
         try {
+            libraryFacade.addBook("The Catcher in the Rye", "J.D. Salinger", 1951, 1);
+            libraryFacade.addMember("John Doe", "123");
+            libraryFacade.addMember("Jane Doe", "456");
+
             libraryFacade.lendBook("The Catcher in the Rye", "123");
             boolean result = libraryFacade.lendBook("The Catcher in the Rye", "456");
             fail("Expected BookStateException not thrown");
@@ -99,5 +103,18 @@ public class LibraryFacadeTest {
             assertEquals("No available copies of the book: The Catcher in the Rye", e.getMessage());
         }
     }
+
+    @Test
+    public void testAddDuplicateMember() {
+        try {
+            libraryFacade.addMember("Member 1", "ID1");
+        } catch (BookStateException e) {
+            fail("BookStateException thrown: " + e.getMessage());
+        }
+        assertThrows(BookStateException.class, () -> {
+            libraryFacade.addMember("Member 2", "ID1");
+        });
+    }
+
 
 }
