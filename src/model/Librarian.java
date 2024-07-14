@@ -54,7 +54,7 @@ public class Librarian {
             Loan loan = new Loan(book, member);
             book.addLoan(loan);
             member.addLoan(loan);
-            library.incrementLoanedBooks(); // Update loaned books count
+            library.incrementLoanedBooks();
             return true;
         } else if (book == null) {
             throw new BookStateException("Book not found: " + title);

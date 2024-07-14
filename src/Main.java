@@ -50,7 +50,7 @@ public class Main extends JFrame {
 
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
-        menuFrame.setSize(400, 550);
+        menuFrame.setSize(400, 600);
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -106,6 +106,11 @@ public class Main extends JFrame {
             viewUserLoans();
         });
 
+        JButton viewBookDetailsButton = createMenuButton("View Book Details", e -> {
+            viewBookDetails();
+        });
+
+
         addButtonToMenu(menuFrame, addBookButton, gbc);
         addButtonToMenu(menuFrame, addMemberButton, gbc);
         addButtonToMenu(menuFrame, lendBookButton, gbc);
@@ -113,6 +118,7 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, removeBookButton, gbc);
         addButtonToMenu(menuFrame, removeMemberButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
+        addButtonToMenu(menuFrame, viewBookDetailsButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
         addButtonToMenu(menuFrame, viewRatingButton, gbc);
         addButtonToMenu(menuFrame, viewLoansButton, gbc);
@@ -121,6 +127,38 @@ public class Main extends JFrame {
 
         menuFrame.setVisible(true);
     }
+
+    private void viewBookDetails() {
+        String title = JOptionPane.showInputDialog("Enter the title of the book to view details:");
+        if (title != null && !title.isEmpty()) {
+            try {
+                Book book = libraryFacade.findBookByTitle(title);
+                if (book != null) {
+                    int totalCopies = book.getQuantity();
+                    int borrowedCopies = book.getBorrowedQuantity();
+                    int availableCopies = book.getAvailableQuantity();
+
+                    StringBuilder bookDetails = new StringBuilder();
+                    bookDetails.append("Title: ").append(book.getTitle()).append("\n");
+                    bookDetails.append("Total Copies: ").append(totalCopies).append("\n");
+                    bookDetails.append("Borrowed Copies: ").append(borrowedCopies).append("\n");
+                    bookDetails.append("Available Copies: ").append(availableCopies).append("\n");
+
+                    JTextArea textArea = new JTextArea(bookDetails.toString());
+                    textArea.setEditable(false);
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setPreferredSize(new Dimension(400, 300));
+                    JOptionPane.showMessageDialog(null, scrollPane, "Book Details", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Book not found: " + title, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (BookStateException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
 
     private void viewUserLoans() {
         String memberId = JOptionPane.showInputDialog("Enter the member ID to view loans:");

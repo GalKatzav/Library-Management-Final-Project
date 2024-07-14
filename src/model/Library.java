@@ -47,7 +47,7 @@ public class Library {
         summary.append("Available Books: ").append(countAvailableBooks()).append("\n");
         summary.append("Loaned Books: ").append(loanedBooksCount).append("\n");
         summary.append("Total Members: ").append(members.size()).append("\n");
-        summary.append("Total Loans: ").append(getTotalLoansCount()).append("\n");
+        summary.append("Total Loans: ").append(totalLoansCount).append("\n");
         return summary.toString();
     }
 
@@ -62,7 +62,7 @@ public class Library {
     private int countAvailableBooks() {
         int availableBooks = 0;
         for (Book book : books) {
-            availableBooks += book.getQuantity();
+            availableBooks += book.getAvailableQuantity();
         }
         return availableBooks;
     }
@@ -75,6 +75,9 @@ public class Library {
     public void decrementLoanedBooks() {
         loanedBooksCount--;
     }
+//    public void incrementTotalLoans() {
+//        totalLoansCount++;
+//    }
 
     public int getTotalLoansCount() {
         return totalLoansCount;

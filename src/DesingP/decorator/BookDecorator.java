@@ -1,5 +1,6 @@
 package DesingP.decorator;
 
+import DesingP.util.BookStateException;
 import model.Book;
 import model.Loan;
 
@@ -39,7 +40,7 @@ public class BookDecorator extends Book {
     }
 
     @Override
-    public void lendCopy() {
+    public void lendCopy() throws BookStateException {
         decoratedBook.lendCopy();
     }
 

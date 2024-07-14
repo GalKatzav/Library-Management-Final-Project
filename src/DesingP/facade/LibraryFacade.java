@@ -75,4 +75,17 @@ public class LibraryFacade {
     public List<Book> getUserLoans(String userId) throws BookStateException{
         return librarian.getUserLoans(userId);
     }
+
+    public Book findBookByTitle(String title) throws BookStateException {
+        for (Book book : library.getBooks()) {
+            if (book.getTitle().equals(title)) {
+                return book;
+            }
+        }
+        throw new BookStateException("Book not found: " + title);
+    }
+    public int getTotalLoans() {
+        return library.getTotalLoansCount();
+    }
+
 }

@@ -1,6 +1,7 @@
 package model;
 
 import DesingP.observer.Observable;
+import DesingP.util.BookStateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ public class Book extends Observable implements Cloneable {
     private String author;
     private int year;
     private int quantity;
+    private int borrowedQuantity;
     private List<Loan> loanHistory;
 
     public Book(String title, String author, int year, int quantity) {
@@ -17,10 +19,10 @@ public class Book extends Observable implements Cloneable {
         this.author = author;
         this.year = year;
         this.quantity = quantity;
+        this.borrowedQuantity = 0;
         this.loanHistory = new ArrayList<>();
     }
 
-    // Getters and setters
     public String getTitle() {
         return title;
     }
@@ -40,15 +42,31 @@ public class Book extends Observable implements Cloneable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    public int getBorrowedQuantity() {
+        return borrowedQuantity;
+    }
+    public int getAvailableQuantity() {
+        return quantity - borrowedQuantity;
+    }
 
-    public void lendCopy() {
-        if (quantity > 0) {
-            quantity--;
+//    public void lendCopy() {
+//        if (quantity > 0) {
+//            quantity--;
+//        }
+//    }
+
+    public void lendCopy() throws BookStateException {
+        if (borrowedQuantity < quantity) {
+            borrowedQuantity++;
+        } else {
+            throw new BookStateException("No available copies of the book: " + title);
         }
     }
 
     public void returnCopy() {
-        quantity++;
+        if (borrowedQuantity > 0) {
+            borrowedQuantity--;
+        }
     }
 
     public void addLoan(Loan loan) {
@@ -73,7 +91,7 @@ public class Book extends Observable implements Cloneable {
     }
 
     public boolean isAvailable() {
-        return quantity > 0;
+        return getAvailableQuantity() > 0;
     }
 
     public void setAvailable(boolean available) {
