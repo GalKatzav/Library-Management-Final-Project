@@ -91,5 +91,9 @@ public class LibraryFacade {
     public int getTotalLoans() {
         return library.getTotalLoansCount();
     }
+    public void updateBookQuantity(String title, int quantity) throws BookStateException {
+        librarian.updateBookQuantity(title, quantity);
+    }
+
 
 }

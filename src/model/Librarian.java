@@ -31,6 +31,19 @@ public class Librarian {
             throw new BookStateException("Book not found: " + title);
         }
     }
+    public void updateBookQuantity(String title, int quantity) throws BookStateException {
+        if (quantity < 0 || quantity > 20) {
+            throw new BookStateException("Quantity must be between 0 and 20: " + quantity);
+        }
+        Book book = findBookByTitle(title);
+        if (book != null) {
+            book.setQuantity(quantity);
+        } else {
+            throw new BookStateException("Book not found: " + title);
+        }
+    }
+
+
 
     public void addMember(String name, String id) throws BookStateException {
         if (findMemberById(id) != null) {

@@ -50,7 +50,7 @@ public class Main extends JFrame {
 
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
-        menuFrame.setSize(400, 600);
+        menuFrame.setSize(400, 650);
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -110,6 +110,12 @@ public class Main extends JFrame {
             viewBookDetails();
         });
 
+        JButton updateBookQuantityButton = createMenuButton("Update Book Quantity", e -> {
+            updateBookQuantity();
+            updateSummaryLabel(summaryLabel);
+        });
+
+
 
         addButtonToMenu(menuFrame, addBookButton, gbc);
         addButtonToMenu(menuFrame, addMemberButton, gbc);
@@ -117,6 +123,7 @@ public class Main extends JFrame {
         addButtonToMenu(menuFrame, returnBookButton, gbc);
         addButtonToMenu(menuFrame, removeBookButton, gbc);
         addButtonToMenu(menuFrame, removeMemberButton, gbc);
+        addButtonToMenu(menuFrame, updateBookQuantityButton, gbc);
         addButtonToMenu(menuFrame, viewBooksButton, gbc);
         addButtonToMenu(menuFrame, viewBookDetailsButton, gbc);
         addButtonToMenu(menuFrame, rateBookButton, gbc);
@@ -127,6 +134,34 @@ public class Main extends JFrame {
 
         menuFrame.setVisible(true);
     }
+    private void updateBookQuantity() {
+        JTextField titleField = new JTextField(10);
+        JTextField quantityField = new JTextField(10);
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Title:"));
+        panel.add(titleField);
+        panel.add(Box.createHorizontalStrut(15)); // מרווח אופקי
+        panel.add(new JLabel("New Quantity (0-20):"));
+        panel.add(quantityField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Update Book Quantity", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String title = titleField.getText();
+            int quantity;
+            try {
+                quantity = Integer.parseInt(quantityField.getText());
+                if (quantity < 0 || quantity > 20) {
+                    throw new NumberFormatException();
+                }
+                libraryFacade.updateBookQuantity(title, quantity);
+                JOptionPane.showMessageDialog(null, "Book quantity updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException | BookStateException e) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid quantity between 0 and 20 and ensure the book exists.", "Invalid Quantity or Book Not Found", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
 
     private void viewBookDetails() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to view details:");
