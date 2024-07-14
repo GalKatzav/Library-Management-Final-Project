@@ -25,9 +25,13 @@ public class LibraryFacade {
         librarian.removeBook(title);
     }
 
-    public void addMember(String name, String id) {
+    public void addMember(String name, String id) throws BookStateException {
+        if (librarian.findMemberById(id) != null) {
+            throw new BookStateException("ID already taken: " + id);
+        }
         librarian.addMember(name, id);
     }
+
 
     public void removeMember(String id) throws BookStateException {
         librarian.removeMember(id);

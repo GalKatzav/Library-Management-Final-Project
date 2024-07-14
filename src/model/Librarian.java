@@ -32,10 +32,14 @@ public class Librarian {
         }
     }
 
-    public void addMember(String name, String id) {
+    public void addMember(String name, String id) throws BookStateException {
+        if (findMemberById(id) != null) {
+            throw new BookStateException("ID already taken: " + id);
+        }
         Member member = new Member(name, id);
         library.addMember(member);
     }
+
 
     public void removeMember(String id) throws BookStateException{
         Member member = findMemberById(id);

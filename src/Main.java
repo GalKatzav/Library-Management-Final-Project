@@ -232,9 +232,15 @@ public class Main extends JFrame {
         if (option == JOptionPane.OK_OPTION) {
             String name = nameField.getText();
             String id = idField.getText();
-            libraryFacade.addMember(name, id);
+            try {
+                libraryFacade.addMember(name, id);
+                JOptionPane.showMessageDialog(null, "Member added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (BookStateException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+
 
     private void lendBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to lend:");
