@@ -14,4 +14,7 @@ public class SingletonLibrary extends Library {
         }
         return instance;
     }
+    public static void resetInstance() {
+        instance = null;
+    }
 }
