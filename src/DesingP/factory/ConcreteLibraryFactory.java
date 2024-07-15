@@ -20,6 +20,7 @@ public class ConcreteLibraryFactory extends LibraryFactory {
      * @return A new {@link Book} instance.
      */
     public Book createBook(String title, String author, int year, int quantity) {
+        // Creates and returns a new Book instance with the given title, author, year, and quantity
         return new Book(title, author, year, quantity);
     }
 
@@ -31,6 +32,7 @@ public class ConcreteLibraryFactory extends LibraryFactory {
      * @return A new {@link Member} instance.
      */
     public Member createMember(String name, String id) {
+        // Creates and returns a new Member instance with the given name and ID
         return new Member(name, id);
     }
 }
