@@ -16,7 +16,7 @@ public class BookObserver implements Observer {
      * @param name The name of the observer.
      */
     public BookObserver(String name) {
-        this.name = name;
+        this.name = name; // Initializes the name field with the provided value
     }
 
     /**
@@ -26,6 +26,7 @@ public class BookObserver implements Observer {
      */
     @Override
     public void update(String message) {
+        // Prints a notification to the console with the observer's name and the received message
         System.out.println("Notification to " + name + ": " + message);
     }
 }
