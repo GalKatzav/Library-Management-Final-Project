@@ -29,9 +29,9 @@ public class LibraryFacade {
      * Also, adds sample books to the library.
      */
     public LibraryFacade() {
-        this.library = SingletonLibrary.getInstance();
-        this.librarian = new Librarian();
-        addSampleBooks();
+        this.library = SingletonLibrary.getInstance(); // Initializes the library field with the singleton library instance
+        this.librarian = new Librarian(); // Initializes the librarian field
+        addSampleBooks(); // Calls the method to add sample books to the library
     }
 
     /**
@@ -43,8 +43,8 @@ public class LibraryFacade {
      * @param quantity The quantity of the book.
      */
     public void addBook(String title, String author, int year, int quantity) {
-        Book book = factory.createBook(title, author, year, quantity);
-        librarian.addBook(book.getTitle(), book.getAuthor(), book.getYear(), book.getQuantity());
+        Book book = factory.createBook(title, author, year, quantity); // Creates a new book using the factory
+        librarian.addBook(book.getTitle(), book.getAuthor(), book.getYear(), book.getQuantity()); // Adds the book to the library through the librarian
     }
 
     /**
@@ -54,11 +54,11 @@ public class LibraryFacade {
      * @throws BookStateException If the book is not found.
      */
     public void removeBook(String title) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        if (book != null) {
-            librarian.removeBook(title);
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        if (book != null) { // If the book is found
+            librarian.removeBook(title); // Removes the book from the library
         } else {
-            throw new BookStateException("Book not found: " + title);
+            throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         }
     }
 
@@ -70,11 +70,11 @@ public class LibraryFacade {
      * @throws BookStateException If the ID is already taken.
      */
     public void addMember(String name, String id) throws BookStateException {
-        if (librarian.findMemberById(id) != null) {
-            throw new BookStateException("ID already taken: " + id);
+        if (librarian.findMemberById(id) != null) { // Checks if the member ID is already taken
+            throw new BookStateException("ID already taken: " + id); // Throws an exception if the ID is taken
         }
-        Member member = factory.createMember(name, id);
-        librarian.addMember(member.getName(), member.getId());
+        Member member = factory.createMember(name, id); // Creates a new member using the factory
+        librarian.addMember(member.getName(), member.getId()); // Adds the member to the library through the librarian
     }
 
     /**
@@ -84,11 +84,11 @@ public class LibraryFacade {
      * @throws BookStateException If the member is not found.
      */
     public void removeMember(String id) throws BookStateException {
-        Member member = librarian.findMemberById(id);
-        if (member != null) {
-            librarian.removeMember(id);
+        Member member = librarian.findMemberById(id); // Finds the member by ID using the librarian
+        if (member != null) { // If the member is found
+            librarian.removeMember(id); // Removes the member from the library
         } else {
-            throw new BookStateException("Member not found: " + id);
+            throw new BookStateException("Member not found: " + id); // Throws an exception if the member is not found
         }
     }
 
@@ -101,14 +101,14 @@ public class LibraryFacade {
      * @throws BookStateException If the book or member is not found, or no copies are available.
      */
     public boolean lendBook(String title, String memberId) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        Member member = librarian.findMemberById(memberId);
-        if (book != null && member != null) {
-            return librarian.lendBook(title, memberId);
-        } else if (book == null) {
-            throw new BookStateException("Book not found: " + title);
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        Member member = librarian.findMemberById(memberId); // Finds the member by ID using the librarian
+        if (book != null && member != null) { // If both the book and member are found
+            return librarian.lendBook(title, memberId); // Lends the book to the member
+        } else if (book == null) { // If the book is not found
+            throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         } else {
-            throw new BookStateException("Member not found: " + memberId);
+            throw new BookStateException("Member not found: " + memberId);// Throws an exception if the member is not found
         }
     }
 
@@ -120,14 +120,14 @@ public class LibraryFacade {
      * @throws BookStateException If the book or member is not found, or no copies were borrowed.
      */
     public void returnBook(String title, String memberId) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        Member member = librarian.findMemberById(memberId);
-        if (book != null && member != null) {
-            librarian.returnBook(title, memberId);
-        } else if (book == null) {
-            throw new BookStateException("Book not found: " + title);
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        Member member = librarian.findMemberById(memberId); // Finds the member by ID using the librarian
+        if (book != null && member != null) { // If both the book and member are found
+            librarian.returnBook(title, memberId); // Returns the book from the member
+        } else if (book == null) { // If the book is not found
+            throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         } else {
-            throw new BookStateException("Member not found: " + memberId);
+            throw new BookStateException("Member not found: " + memberId); // Throws an exception if the member is not found
         }
     }
 
@@ -137,7 +137,7 @@ public class LibraryFacade {
      * @return A summary of the library.
      */
     public String getLibrarySummary() {
-        return library.getLibrarySummary();
+        return library.getLibrarySummary(); // Returns the summary of the library
     }
 
     /**
@@ -146,7 +146,7 @@ public class LibraryFacade {
      * @return A list of all books in the library.
      */
     public List<Book> getAllBooks() {
-        return library.getBooks();
+        return library.getBooks(); // Returns a list of all books in the library
     }
 
     /**
@@ -168,11 +168,11 @@ public class LibraryFacade {
      * @throws BookStateException If the book is not found.
      */
     public void rateBook(String title, double rating) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        if (book != null) {
-            librarian.rateBook(title, rating);
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        if (book != null) { // If the book is found
+            librarian.rateBook(title, rating); // Rates the book
         } else {
-            throw new BookStateException("Book not found: " + title);
+            throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         }
     }
 
@@ -184,15 +184,15 @@ public class LibraryFacade {
      * @throws BookStateException If the book is not found.
      */
     public double getBookRating(String title) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        if (book != null) {
-            if (book instanceof RatedBook) {
-                return ((RatedBook) book).getRating();
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        if (book != null) { // If the book is found
+            if (book instanceof RatedBook) { // Checks if the book is an instance of RatedBook
+                return ((RatedBook) book).getRating(); // Returns the rating of the book
             } else {
                 return 0.0; // Book found but not rated
             }
         } else {
-            throw new BookStateException("Book not found: " + title);
+            throw new BookStateException("Book not found: " + title); // Returns 0.0 if the book is not rated
         }
     }
 
@@ -204,11 +204,11 @@ public class LibraryFacade {
      * @throws BookStateException If the member is not found.
      */
     public List<Book> getUserLoans(String userId) throws BookStateException{
-        Member member = librarian.findMemberById(userId);
-        if (member != null) {
-            return librarian.getUserLoans(userId);
+        Member member = librarian.findMemberById(userId); // Finds the member by ID using the librarian
+        if (member != null) { // If the member is found
+            return librarian.getUserLoans(userId); // Returns the list of books loaned by the member
         } else {
-            throw new BookStateException("Member not found: " + userId);
+            throw new BookStateException("Member not found: " + userId); // Throws an exception if the member is not found
         }
     }
 
@@ -220,12 +220,12 @@ public class LibraryFacade {
      * @throws BookStateException If the book is not found.
      */
     public Book findBookByTitle(String title) throws BookStateException {
-        for (Book book : library.getBooks()) {
-            if (book.getTitle().equals(title)) {
-                return book;
+        for (Book book : library.getBooks()) { // Iterates through the list of books in the library
+            if (book.getTitle().equals(title)) { // Checks if the title of the book matches the specified title
+                return book; // Returns the book if the title matches
             }
         }
-        throw new BookStateException("Book not found: " + title);
+        throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
     }
 
     /**
@@ -234,7 +234,7 @@ public class LibraryFacade {
      * @return The total number of loans.
      */
     public int getTotalLoans() {
-        return library.getTotalLoansCount();
+        return library.getTotalLoansCount(); // Returns the total number of loans in the library
     }
 
     /**
@@ -245,11 +245,11 @@ public class LibraryFacade {
      * @throws BookStateException If the quantity is out of range (0-20) or the book is not found.
      */
     public void updateBookQuantity(String title, int quantity) throws BookStateException {
-        Book book = librarian.findBookByTitle(title);
-        if (book != null) {
-            librarian.updateBookQuantity(title, quantity);
+        Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
+        if (book != null) { // If the book is found
+            librarian.updateBookQuantity(title, quantity); // Updates the quantity of the book
         } else {
-            throw new BookStateException("Book not found: " + title);
+            throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         }
     }
 }
