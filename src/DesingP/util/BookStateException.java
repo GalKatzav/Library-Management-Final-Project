@@ -13,6 +13,6 @@ public class BookStateException extends Exception{
      * @param message The detail message explaining the reason for the exception.
      */
     public BookStateException(String message) {
-        super(message);
+        super(message); // Calls the constructor of the superclass Exception with the message
     }
 }
