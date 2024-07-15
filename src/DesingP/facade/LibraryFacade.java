@@ -1,6 +1,8 @@
 package DesingP.facade;
 
 import DesingP.decorator.RatedBook;
+import DesingP.factory.ConcreteLibraryFactory;
+import DesingP.factory.LibraryFactory;
 import DesingP.util.BookStateException;
 import model.*;
 import DesingP.singleton.SingletonLibrary;
@@ -14,10 +16,12 @@ import java.util.List;
 public class LibraryFacade {
 
     /** The library instance. */
-    private Library library;
+    private final Library library;
 
     /** The librarian instance. */
-    private Librarian librarian;
+    private final Librarian librarian;
+
+    private static final LibraryFactory factory = new ConcreteLibraryFactory();
 
     /**
      * Constructs a new {@code LibraryFacade} object and initializes the library and librarian.
@@ -38,7 +42,8 @@ public class LibraryFacade {
      * @param quantity The quantity of the book.
      */
     public void addBook(String title, String author, int year, int quantity) {
-        librarian.addBook(title, author, year, quantity);
+        Book book = factory.createBook(title, author, year, quantity);
+        librarian.addBook(book.getTitle(), book.getAuthor(), book.getYear(), book.getQuantity());
     }
 
     /**
@@ -67,7 +72,8 @@ public class LibraryFacade {
         if (librarian.findMemberById(id) != null) {
             throw new BookStateException("ID already taken: " + id);
         }
-        librarian.addMember(name, id);
+        Member member = factory.createMember(name, id);
+        librarian.addMember(member.getName(), member.getId());
     }
 
     /**
