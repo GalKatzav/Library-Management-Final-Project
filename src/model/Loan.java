@@ -9,13 +9,13 @@ import java.util.Date;
 public class Loan {
 
     /** The book that is being loaned. */
-    private Book book;
+    private final Book book;
 
     /** The member to whom the book is loaned. */
-    private Member member;
+    private final Member member;
 
     /** The date when the book was loaned. */
-    private Date loanDate;
+    private final Date loanDate;
 
     /** The date when the book was returned. */
     private Date returnDate;
