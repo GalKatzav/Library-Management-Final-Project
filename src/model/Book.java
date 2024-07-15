@@ -14,13 +14,13 @@ import java.util.List;
  */
 public class Book extends Observable implements Cloneable {
     /** The title of the book. */
-    private String title;
+    private final String title;
 
     /** The author of the book. */
-    private String author;
+    private final String author;
 
     /** The publication year of the book. */
-    private int year;
+    private final int year;
 
     /** The total quantity of the book available in the library. */
     private int quantity;
@@ -29,7 +29,7 @@ public class Book extends Observable implements Cloneable {
     private int borrowedQuantity;
 
     /** The history of loans for this book. */
-    private List<Loan> loanHistory;
+    private final List<Loan> loanHistory;
 
 
     /**
@@ -118,10 +118,11 @@ public class Book extends Observable implements Cloneable {
      * @throws BookStateException If there are no available copies to lend.
      */
     public void lendCopy() throws BookStateException {
+        // Checks if there are available copies to lend
         if (borrowedQuantity < quantity) {
-            borrowedQuantity++;
+            borrowedQuantity++; // Increases the borrowed quantity by 1
         } else {
-            throw new BookStateException("No available copies of the book: " + title);
+            throw new BookStateException("No available copies of the book: " + title); // Throws an exception if no copies are available
         }
     }
 
@@ -131,10 +132,11 @@ public class Book extends Observable implements Cloneable {
      * @throws BookStateException If there are no borrowed copies to return.
      */
     public void returnCopy() throws BookStateException {
+        // Checks if there are borrowed copies to return
         if (borrowedQuantity > 0) {
-            borrowedQuantity--;
+            borrowedQuantity--; // Decreases the borrowed quantity by 1
         } else {
-            throw new BookStateException("No borrowed copies to return for the book: " + title);
+            throw new BookStateException("No borrowed copies to return for the book: " + title); // Throws an exception if no copies are borrowed
         }
     }
 
@@ -170,12 +172,12 @@ public class Book extends Observable implements Cloneable {
      * quantity, borrowed quantity, and loan history.
      *
      * @return A cloned instance of the book.
-     * @throws CloneNotSupportedException If cloning is not supported for this object.
      */
     @Override
     public Book clone() {
         try {
-            return (Book) super.clone();
+            // Attempts to clone the book
+            return (Book) super.clone(); // Calls the clone method of the superclass
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(); // Can't happen
         }
@@ -196,10 +198,11 @@ public class Book extends Observable implements Cloneable {
      * @param available {@code true} if the book should be available, {@code false} otherwise.
      */
     public void setAvailable(boolean available) {
+        // Sets the quantity based on the availability status
         if (available) {
-            quantity = Math.max(quantity, 1);
+            quantity = Math.max(quantity, 1); // Ensures at least one copy is available
         } else {
-            quantity = 0;
+            quantity = 0; // Sets the quantity to 0 if not available
         }
     }
 }
