@@ -16,7 +16,7 @@ import java.util.List;
 public class Librarian {
 
     /** The library instance used by the librarian to perform operations. */
-    private Library library;
+    private final Library library;
 
     /**
      * Constructs a new {@code Librarian} object and initializes it with the singleton library instance.
@@ -164,7 +164,7 @@ public class Librarian {
      */
     public Book findBookByTitle(String title) {
         for (Book book : library.getBooks()) {
-            if (book.getTitle().contains(title) || book instanceof RatedBook && ((RatedBook) book).getTitle().equals(title)) {
+            if (book.getTitle().contains(title) || book instanceof RatedBook && (book).getTitle().equals(title)) {
                 return book;
             }
         }
