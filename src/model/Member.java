@@ -15,16 +15,16 @@ import java.util.List;
 public class Member extends Observable {
 
     /** The name of the member. */
-    private String name;
+    private final String name;
 
     /** The ID of the member. */
-    private String id;
+    private final String id;
 
     /** The list of loans that the member has. */
-    private List<Loan> loans;
+    private final List<Loan> loans;
 
     /** The list of observers observing this member. */
-    private List<Observer> observers;
+    private final List<Observer> observers;
 
     /**
      * Constructs a new {@code Member} object with the specified name and ID.
