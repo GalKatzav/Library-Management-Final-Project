@@ -21,6 +21,7 @@ public class LibraryFacade {
     /** The librarian instance. */
     private final Librarian librarian;
 
+    /** The libraryFactory instance. */
     private static final LibraryFactory factory = new ConcreteLibraryFactory();
 
     /**
