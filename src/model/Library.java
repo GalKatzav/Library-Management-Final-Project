@@ -51,7 +51,7 @@ public class Library {
         return summary.toString();
     }
 
-    private int countTotalBooks() {
+    public int countTotalBooks() {
         int totalBooks = 0;
         for (Book book : books) {
             totalBooks += book.getQuantity();
@@ -59,7 +59,11 @@ public class Library {
         return totalBooks;
     }
 
-    private int countAvailableBooks() {
+    public int getLoanedBooksCount() {
+        return loanedBooksCount;
+    }
+
+    public int countAvailableBooks() {
         int availableBooks = 0;
         for (Book book : books) {
             availableBooks += book.getAvailableQuantity();
@@ -75,9 +79,7 @@ public class Library {
     public void decrementLoanedBooks() {
         loanedBooksCount--;
     }
-//    public void incrementTotalLoans() {
-//        totalLoansCount++;
-//    }
+
 
     public int getTotalLoansCount() {
         return totalLoansCount;
