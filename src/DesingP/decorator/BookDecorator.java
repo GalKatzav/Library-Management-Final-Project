@@ -21,7 +21,9 @@ public class BookDecorator extends Book {
      * @param decoratedBook The book instance to be decorated.
      */
     public BookDecorator(Book decoratedBook) {
+        // Calls the constructor of the superclass Book with the details of the decorated book
         super(decoratedBook.getTitle(), decoratedBook.getAuthor(), decoratedBook.getYear(), decoratedBook.getQuantity());
+        // Stores the decorated book instance in the decoratedBook field
         this.decoratedBook = decoratedBook;
     }
 
@@ -32,6 +34,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public String getTitle() {
+        // Forwards the getTitle call to the decorated book instance
         return decoratedBook.getTitle();
     }
 
@@ -42,6 +45,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public String getAuthor() {
+        // Forwards the getAuthor call to the decorated book instance
         return decoratedBook.getAuthor();
     }
 
@@ -52,6 +56,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public int getYear() {
+        // Forwards the getYear call to the decorated book instance
         return decoratedBook.getYear();
     }
 
@@ -62,6 +67,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public int getQuantity() {
+        // Forwards the getQuantity call to the decorated book instance
         return decoratedBook.getQuantity();
     }
 
@@ -72,6 +78,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public void setQuantity(int quantity) {
+        // Forwards the setQuantity call to the decorated book instance
         decoratedBook.setQuantity(quantity);
     }
 
@@ -82,7 +89,13 @@ public class BookDecorator extends Book {
      */
     @Override
     public void lendCopy() throws BookStateException {
-        decoratedBook.lendCopy();
+        // Forwards the lendCopy call to the decorated book instance
+        try {
+            decoratedBook.lendCopy();
+        } catch (BookStateException e) {
+            // Throws the exception if the decorated book's lendCopy method throws it
+            throw new BookStateException("Error lending book copy: " + e.getMessage());
+        }
     }
 
     /**
@@ -92,7 +105,13 @@ public class BookDecorator extends Book {
      */
     @Override
     public void returnCopy() throws BookStateException {
-        decoratedBook.returnCopy();
+        // Forwards the returnCopy call to the decorated book instance
+        try {
+            decoratedBook.returnCopy();
+        } catch (BookStateException e) {
+            // Throws the exception if the decorated book's returnCopy method throws it
+            throw new BookStateException("Error returning book copy: " + e.getMessage());
+        }
     }
 
     /**
@@ -102,6 +121,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public void addLoan(Loan loan) {
+        // Forwards the addLoan call to the decorated book instance
         decoratedBook.addLoan(loan);
     }
 
@@ -112,6 +132,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public void removeLoan(Loan loan) {
+        // Forwards the removeLoan call to the decorated book instance
         decoratedBook.removeLoan(loan);
     }
 
@@ -122,6 +143,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public List<Loan> getLoanHistory() {
+        // Forwards the getLoanHistory call to the decorated book instance
         return decoratedBook.getLoanHistory();
     }
 
@@ -132,6 +154,7 @@ public class BookDecorator extends Book {
      */
     @Override
     public boolean isAvailable() {
+        // Forwards the isAvailable call to the decorated book instance
         return decoratedBook.isAvailable();
     }
 
@@ -144,8 +167,11 @@ public class BookDecorator extends Book {
      */
     @Override
     public boolean equals(Object obj) {
+        // Checks if this instance and the obj are the same
         if (this == obj) return true;
+        // Checks if the obj is null or if they are not of the same class
         if (obj == null || getClass() != obj.getClass()) return false;
+        // Casts obj to BookDecorator and compares the decorated books for equality
         BookDecorator that = (BookDecorator) obj;
         return decoratedBook.equals(that.decoratedBook);
     }
