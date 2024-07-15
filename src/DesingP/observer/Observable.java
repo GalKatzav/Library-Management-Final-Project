@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Observable {
 
     /** A list of observers that are monitoring this observable object. */
-    private List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
     /**
      * Adds an observer to the list of observers.
@@ -19,7 +19,7 @@ public abstract class Observable {
      * @param observer The observer to be added.
      */
     public void addObserver(Observer observer) {
-        observers.add(observer);
+        observers.add(observer); // Adds the observer to the list
     }
 
     /**
@@ -28,7 +28,7 @@ public abstract class Observable {
      * @param observer The observer to be removed.
      */
     public void removeObserver(Observer observer) {
-        observers.remove(observer);
+        observers.remove(observer); // Removes the observer from the list
     }
 
     /**
@@ -37,8 +37,9 @@ public abstract class Observable {
      * @param message The message to be sent to all observers.
      */
     protected void notifyObservers(String message) {
+        // Iterates over the list of observers and calls their update method with the message
         for (Observer observer : observers) {
-            observer.update(message);
+            observer.update(message); // Calls the update method of the observer with the message
         }
     }
 }
