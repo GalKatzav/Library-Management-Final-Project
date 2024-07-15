@@ -14,6 +14,8 @@ import java.util.List;
  * updating book quantities, lending and returning books, and managing members.
  */
 public class Librarian {
+
+    /** The library instance used by the librarian to perform operations. */
     private Library library;
 
     /**
