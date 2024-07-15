@@ -8,7 +8,7 @@ package DesingP.observer;
 public class BookObserver implements Observer {
 
     /** The name of the observer. */
-    private String name;
+    private final  String name;
 
     /**
      * Constructs a new {@code BookObserver} object with the specified name.
