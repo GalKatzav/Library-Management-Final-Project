@@ -7,9 +7,21 @@ import DesingP.facade.LibraryFacade;
 import DesingP.util.BookStateException;
 import model.Book;
 
-public class Main extends JFrame {
-    private LibraryFacade libraryFacade;
 
+/**
+ * The {@code Main} class represents the main application window for the Digital Library system.
+ * It provides a graphical user interface (GUI) for interacting with the library system, including
+ * adding and removing books, updating book quantities, lending and returning books, managing members,
+ * and viewing library information.
+ */
+public class Main extends JFrame {
+
+    /** The facade for interacting with the library system. */
+    private final LibraryFacade libraryFacade;
+
+    /**
+     * Constructs a new {@code Main} object and initializes the main application window.
+     */
     public Main() {
         libraryFacade = new LibraryFacade();
         setTitle("Digital Library");
@@ -17,9 +29,8 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // יצירת ממשק משתמש
         JLabel libraryNameLabel = new JLabel("Welcome to the Digital Library", SwingConstants.CENTER);
-        libraryNameLabel.setFont(new Font("Serif", Font.BOLD, 24)); // הגדלת גודל הכתב
+        libraryNameLabel.setFont(new Font("Serif", Font.BOLD, 24));
         JLabel summaryLabel = new JLabel("", SwingConstants.CENTER);
         updateSummaryLabel(summaryLabel);
 
@@ -31,13 +42,12 @@ public class Main extends JFrame {
             }
         });
 
-        // הגדרת GridBagLayout למרכז את האלמנטים
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(10, 10, 10, 10); // הוספת מרווחים
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         add(libraryNameLabel, gbc);
 
@@ -48,6 +58,11 @@ public class Main extends JFrame {
         add(menuButton, gbc);
     }
 
+    /**
+     * Opens the library menu in a new window.
+     *
+     * @param summaryLabel The label to update the library summary.
+     */
     private void openMenu(JLabel summaryLabel) {
         JFrame menuFrame = new JFrame("Library Menu");
         menuFrame.setSize(400, 650);
@@ -57,7 +72,7 @@ public class Main extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(10, 10, 10, 10); // הוספת מרווחים בין הכפתורים
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         JButton addBookButton = createMenuButton("Add Book", e -> {
             addBook();
@@ -134,6 +149,10 @@ public class Main extends JFrame {
 
         menuFrame.setVisible(true);
     }
+
+    /**
+     * Updates the quantity of a book in the library.
+     */
     private void updateBookQuantity() {
         JTextField titleField = new JTextField(10);
         JTextField quantityField = new JTextField(10);
@@ -162,7 +181,9 @@ public class Main extends JFrame {
         }
     }
 
-
+    /**
+     * Displays the details of a book in the library.
+     */
     private void viewBookDetails() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to view details:");
         if (title != null && !title.isEmpty()) {
@@ -193,8 +214,9 @@ public class Main extends JFrame {
         }
     }
 
-
-
+    /**
+     * Displays the list of books currently borrowed by a member.
+     */
     private void viewUserLoans() {
         String memberId = JOptionPane.showInputDialog("Enter the member ID to view loans:");
         if (memberId != null && !memberId.isEmpty()) {
@@ -220,19 +242,34 @@ public class Main extends JFrame {
         }
     }
 
-
-
+    /**
+     * Creates a new button for the library menu.
+     *
+     * @param text The text to display on the button.
+     * @param actionListener The action listener for the button.
+     * @return The created button.
+     */
     private JButton createMenuButton(String text, ActionListener actionListener) {
         JButton button = new JButton(text);
         button.addActionListener(actionListener);
         return button;
     }
 
+    /**
+     * Adds a button to the library menu frame.
+     *
+     * @param menuFrame The frame of the library menu.
+     * @param button The button to add.
+     * @param gbc The GridBagConstraints for layout.
+     */
     private void addButtonToMenu(JFrame menuFrame, JButton button, GridBagConstraints gbc) {
         menuFrame.add(button, gbc);
         gbc.gridy++;
     }
 
+    /**
+     * Adds a new book to the library.
+     */
     private void addBook() {
         JTextField titleField = new JTextField();
         JTextField authorField = new JTextField();
@@ -255,6 +292,9 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Adds a new member to the library.
+     */
     private void addMember() {
         JTextField nameField = new JTextField();
         JTextField idField = new JTextField();
@@ -276,7 +316,9 @@ public class Main extends JFrame {
         }
     }
 
-
+    /**
+     * Lends a book to a member.
+     */
     private void lendBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to lend:");
         String memberId = JOptionPane.showInputDialog("Enter the member ID:");
@@ -288,6 +330,9 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Returns a borrowed book to the library.
+     */
     private void returnBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to return:");
         String memberId = JOptionPane.showInputDialog("Enter the member ID:");
@@ -299,6 +344,9 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Removes a book from the library.
+     */
     private void removeBook() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to remove:");
         try {
@@ -309,6 +357,9 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Removes a member from the library.
+     */
     private void removeMember() {
         String id = JOptionPane.showInputDialog("Enter the member ID to remove:");
         try {
@@ -319,6 +370,9 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Displays a list of all books in the library.
+     */
     private void viewAllBooks() {
         java.util.List<Book> books = libraryFacade.getAllBooks();
         StringBuilder bookList = new StringBuilder();
@@ -333,6 +387,9 @@ public class Main extends JFrame {
         JOptionPane.showMessageDialog(null, scrollPane, "All Books", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Displays a dialog to rate a book.
+     */
     private void showRateBookDialog() {
         JTextField titleField = new JTextField(10);
         JTextField ratingField = new JTextField(10);
@@ -361,7 +418,9 @@ public class Main extends JFrame {
         }
     }
 
-
+    /**
+     * Displays the rating of a book.
+     */
     private void showViewRatingDialog() {
         String title = JOptionPane.showInputDialog("Enter the title of the book to view rating:");
         if (title != null && !title.isEmpty()) {
@@ -378,13 +437,21 @@ public class Main extends JFrame {
         }
     }
 
-
+    /**
+     * Updates the summary label with the current summary of the library.
+     *
+     * @param summaryLabel The label to update with the library summary.
+     */
     private void updateSummaryLabel(JLabel summaryLabel) {
         String summary = libraryFacade.getLibrarySummary().replace("\n", "<br><br>");
         summaryLabel.setText("<html>" + summary + "</html>");
     }
 
-
+    /**
+     * The main method to run the application.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
