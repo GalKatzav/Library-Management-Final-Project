@@ -17,7 +17,7 @@ public class SingletonLibrary extends Library {
      * Initializes the {@code SingletonLibrary} instance.
      */
     private SingletonLibrary() {
-        super();
+        super(); // Calls the constructor of the superclass Library
     }
 
     /**
@@ -27,10 +27,11 @@ public class SingletonLibrary extends Library {
      * @return The single instance of the {@code SingletonLibrary}.
      */
     public static SingletonLibrary getInstance() {
+        // Checks if the instance is null and creates a new one if necessary
         if (instance == null) {
-            instance = new SingletonLibrary();
+            instance = new SingletonLibrary(); // Initializes the instance
         }
-        return instance;
+        return instance; // Returns the single instance of SingletonLibrary
     }
 
     /**
@@ -38,6 +39,6 @@ public class SingletonLibrary extends Library {
      * This method is mainly used for testing purposes.
      */
     public static void resetInstance() {
-        instance = null;
+        instance = null; // Sets the instance to null, effectively resetting the singleton
     }
 }
