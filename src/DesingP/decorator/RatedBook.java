@@ -19,8 +19,8 @@ public class RatedBook extends BookDecorator{
      */
 
     public RatedBook(Book decoratedBook, double rating) {
-        super(decoratedBook);
-        this.rating = rating;
+        super(decoratedBook); // Calls the constructor of the superclass BookDecorator
+        this.rating = rating; // Initializes the rating field with the provided value
     }
 
     /**
@@ -29,7 +29,7 @@ public class RatedBook extends BookDecorator{
      * @return The rating of the book.
      */
     public double getRating() {
-        return rating;
+        return rating; // Returns the value of the rating field
     }
 
     /**
@@ -38,7 +38,7 @@ public class RatedBook extends BookDecorator{
      * @param rating The new rating of the book.
      */
     public void setRating(double rating) {
-        this.rating = rating;
+        this.rating = rating; // Updates the rating field with the provided value
     }
 
     /**
@@ -48,6 +48,7 @@ public class RatedBook extends BookDecorator{
      */
     @Override
     public String getTitle() {
+        // Returns the title of the decorated book, appending the rating to it
         return decoratedBook.getTitle() + " (Rated: " + rating + ")";
     }
 
@@ -60,9 +61,10 @@ public class RatedBook extends BookDecorator{
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        RatedBook ratedBook = (RatedBook) obj;
+        if (this == obj) return true; // Checks if this object is the same as the compared object
+        if (obj == null || getClass() != obj.getClass()) return false; // Checks if the compared object is null or of a different class
+        RatedBook ratedBook = (RatedBook) obj; // Casts the compared object to RatedBook
+        // Compares the ratings and the decorated books for equality
         return Double.compare(ratedBook.rating, rating) == 0 &&
                 decoratedBook.equals(ratedBook.decoratedBook);
     }
