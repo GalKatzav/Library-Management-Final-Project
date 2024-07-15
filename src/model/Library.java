@@ -10,10 +10,10 @@ import java.util.List;
 public class Library {
 
     /** A list of books in the library. */
-    private List<Book> books;
+    private final List<Book> books;
 
     /** A list of members in the library. */
-    private List<Member> members;
+    private final List<Member> members;
 
     /** The count of books currently loaned out. */
     private int loanedBooksCount;
@@ -93,13 +93,13 @@ public class Library {
      * @return A summary of the library's information.
      */
     public String getLibrarySummary() {
-        StringBuilder summary = new StringBuilder();
+        StringBuilder summary = new StringBuilder(); // Creates a new StringBuilder to build the summary
         summary.append("Total Books: ").append(countTotalBooks()).append("\n");
         summary.append("Available Books: ").append(countAvailableBooks()).append("\n");
         summary.append("Loaned Books: ").append(loanedBooksCount).append("\n");
         summary.append("Total Members: ").append(members.size()).append("\n");
         summary.append("Total Loans: ").append(totalLoansCount).append("\n");
-        return summary.toString();
+        return summary.toString(); // Returns the summary as a string
     }
 
     /**
@@ -108,11 +108,11 @@ public class Library {
      * @return The total number of books.
      */
     public int countTotalBooks() {
-        int totalBooks = 0;
+        int totalBooks = 0; // Initializes the total books count to 0
         for (Book book : books) {
-            totalBooks += book.getQuantity();
+            totalBooks += book.getQuantity(); // Adds the quantity of each book to the total books count
         }
-        return totalBooks;
+        return totalBooks; // Returns the total books count
     }
 
     /**
@@ -130,19 +130,19 @@ public class Library {
      * @return The total number of available books.
      */
     public int countAvailableBooks() {
-        int availableBooks = 0;
+        int availableBooks = 0; // Initializes the available books count to 0
         for (Book book : books) {
-            availableBooks += book.getAvailableQuantity();
+            availableBooks += book.getAvailableQuantity(); // Adds the available quantity of each book to the available books count
         }
-        return availableBooks;
+        return availableBooks; // Returns the available books count
     }
 
     /**
      * Increments the count of loaned books and total loans by one.
      */
     public void incrementLoanedBooks() {
-        loanedBooksCount++;
-        totalLoansCount++;
+        loanedBooksCount++; // Increments the loaned books count by 1
+        totalLoansCount++; // Increments the total loans count by 1
     }
 
     /**
