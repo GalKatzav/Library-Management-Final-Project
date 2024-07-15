@@ -8,7 +8,7 @@ package DesingP.observer;
 public class MemberObserver implements Observer {
 
     /** The name of the observer. */
-    private String name;
+    private final String name;
 
     /**
      * Constructs a new {@code MemberObserver} object with the specified name.
@@ -16,7 +16,7 @@ public class MemberObserver implements Observer {
      * @param name The name of the observer.
      */
     public MemberObserver(String name) {
-        this.name = name;
+        this.name = name; // Initializes the name field with the provided value
     }
 
     /**
@@ -26,6 +26,7 @@ public class MemberObserver implements Observer {
      */
     @Override
     public void update(String message) {
+        // Prints a notification to the console with the observer's name and the received message
         System.out.println("Notification to " + name + ": " + message);
     }
 }
