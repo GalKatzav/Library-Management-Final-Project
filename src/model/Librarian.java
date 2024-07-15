@@ -4,6 +4,7 @@ import DesingP.decorator.RatedBook;
 import DesingP.observer.BookObserver;
 import DesingP.singleton.SingletonLibrary;
 import DesingP.util.BookStateException;
+import DesingP.observer.MemberObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,8 @@ public class Librarian {
             throw new BookStateException("ID already taken: " + id);
         }
         Member member = new Member(name, id);
+        MemberObserver observer = new MemberObserver(name);
+        member.addObserver(observer);
         library.addMember(member);
     }
 
