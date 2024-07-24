@@ -47,14 +47,19 @@ public class Librarian {
      * @param title The title of the book to be removed.
      * @throws BookStateException If the book is not found in the library.
      */
-    public void removeBook(String title) throws BookStateException{
+    public void removeBook(String title) throws BookStateException {
         Book book = findBookByTitle(title); // Finds the book by its title
         if (book != null) {
-            library.removeBook(book); // Removes the book from the library
-        }else {
+            if (book.getBorrowedQuantity() == 0) { // Check if no copies of the book are borrowed
+                library.removeBook(book); // Removes the book from the library
+            } else {
+                throw new BookStateException("Cannot remove the book. There are borrowed copies."); // Throws an exception if the book is borrowed
+            }
+        } else {
             throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         }
     }
+
 
     /**
      * Updates the quantity of a book in the library based on its title.

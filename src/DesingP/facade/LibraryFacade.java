@@ -55,12 +55,17 @@ public class LibraryFacade {
      */
     public void removeBook(String title) throws BookStateException {
         Book book = librarian.findBookByTitle(title); // Finds the book by title using the librarian
-        if (book != null) { // If the book is found
-            librarian.removeBook(title); // Removes the book from the library
+        if (book != null) {
+            if (book.getBorrowedQuantity() == 0) { // Check if no copies of the book are borrowed
+                librarian.removeBook(title); // Removes the book from the library
+            } else {
+                throw new BookStateException("Cannot remove the book. There are borrowed copies."); // Throws an exception if the book is borrowed
+            }
         } else {
             throw new BookStateException("Book not found: " + title); // Throws an exception if the book is not found
         }
     }
+
 
     /**
      * Adds a member to the library.
