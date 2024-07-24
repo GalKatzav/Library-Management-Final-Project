@@ -98,11 +98,15 @@ public class Librarian {
      * @param id The ID of the member to be removed.
      * @throws BookStateException If the member is not found in the library.
      */
-    public void removeMember(String id) throws BookStateException{
+    public void removeMember(String id) throws BookStateException {
         Member member = findMemberById(id); // Finds the member by their ID
         if (member != null) {
-            library.removeMember(member); // Removes the member from the library
-        }else {
+            if (member.getLoans().isEmpty()) { // Check if the member has any loans
+                library.removeMember(member); // Removes the member from the library
+            } else {
+                throw new BookStateException("Member has borrowed books and cannot be removed."); // Throws an exception if the member has borrowed books
+            }
+        } else {
             throw new BookStateException("Member not found: " + id); // Throws an exception if the member is not found
         }
     }

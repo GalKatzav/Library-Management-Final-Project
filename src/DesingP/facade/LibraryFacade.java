@@ -85,8 +85,12 @@ public class LibraryFacade {
      */
     public void removeMember(String id) throws BookStateException {
         Member member = librarian.findMemberById(id); // Finds the member by ID using the librarian
-        if (member != null) { // If the member is found
-            librarian.removeMember(id); // Removes the member from the library
+        if (member != null) {
+            if (member.getLoans().isEmpty()) { // Check if the member has any loans
+                librarian.removeMember(id); // Removes the member from the library
+            } else {
+                throw new BookStateException("Member has borrowed books and cannot be removed."); // Throws an exception if the member has borrowed books
+            }
         } else {
             throw new BookStateException("Member not found: " + id); // Throws an exception if the member is not found
         }
